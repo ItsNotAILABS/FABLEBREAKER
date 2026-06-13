@@ -2,8 +2,13 @@
 FableBreaker AutoAgent — automated PR analysis engine.
 
 This is the core logic that runs when the GitHub Action is triggered.
-It scans changed files in a PR, runs FableBreaker analysis, and posts
-results as PR comments or inline review annotations.
+It scans changed files in a PR, runs FableBreaker analysis using the
+native Intelligence Engine pipeline (adversarial, correctness,
+contamination, certification, meta-evaluation) and posts results
+as PR comments or inline review annotations.
+
+Unlike external tools (CodeRabbit, CodeQL), this uses FableBreaker's
+internal cognition — the same engines that power the benchmark itself.
 """
 
 from __future__ import annotations
@@ -15,7 +20,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-# Ensure SDK is importable
+# Ensure SDK and lib are importable
 AGENT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = AGENT_DIR.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -24,6 +29,14 @@ sys.path.insert(0, str(REPO_ROOT / "fablebreaker_sdk"))
 from fablebreaker_sdk import FableBreaker  # noqa: E402
 from fablebreaker_sdk.scanner import CodeScanner  # noqa: E402
 from fablebreaker_sdk.reporter import ReportGenerator  # noqa: E402
+from fablebreaker_lib.intelligence.engines import (  # noqa: E402
+    EngineRegistry,
+    AdversarialEngine,
+    CorrectnessEngine,
+    ContaminationEngine,
+    CertificationEngine,
+    MetaEvaluationEngine,
+)
 
 
 SEVERITY_LEVELS = {"low": 0, "medium": 1, "high": 2, "critical": 3}
@@ -70,9 +83,115 @@ def severity_meets_threshold(severity: str, threshold: str) -> bool:
     return SEVERITY_LEVELS.get(severity.lower(), 0) >= SEVERITY_LEVELS.get(threshold.lower(), 0)
 
 
+def build_engine_registry() -> EngineRegistry:
+    """Build the native FableBreaker engine pipeline."""
+    registry = EngineRegistry()
+    registry.register(AdversarialEngine())
+    registry.register(CorrectnessEngine())
+    registry.register(ContaminationEngine())
+    registry.register(CertificationEngine())
+    registry.register(MetaEvaluationEngine())
+    return registry
+
+
+def run_engine_pipeline(
+    code: str,
+    filepath: str,
+    registry: EngineRegistry,
+) -> list[dict[str, Any]]:
+    """
+    Run the internal FableBreaker engine pipeline on a code snippet.
+
+    This is what makes AutoAgent native — the same cognition engines
+    that power the benchmark itself evaluate the code.
+    """
+    context = {
+        "code": code,
+        "filepath": filepath,
+        "mode": "generate",
+        "intensity": 5,
+        "seed": hash(filepath) % 100000,
+        "target_domain": "code_review",
+    }
+
+    engine_findings: list[dict[str, Any]] = []
+
+    # Run adversarial analysis — probe for exploitable patterns
+    adv_result = registry.run_engine("adversarial", context)
+    if adv_result.findings:
+        for finding in adv_result.findings[:3]:
+            engine_findings.append({
+                "category": finding.get("family", "adversarial"),
+                "severity": "medium" if finding.get("intensity", 0) > 5 else "low",
+                "description": finding.get("description", "Adversarial pattern detected"),
+                "source": "engine:adversarial",
+                "engine_confidence": adv_result.confidence,
+            })
+
+    # Run correctness engine — verify semantic integrity
+    correctness_ctx = {
+        "candidate_outputs": [code],
+        "reference_outputs": [],
+        "code": code,
+        "filepath": filepath,
+    }
+    correctness_result = registry.run_engine("correctness", correctness_ctx)
+    if correctness_result.findings:
+        for finding in correctness_result.findings[:3]:
+            engine_findings.append({
+                "category": "correctness",
+                "severity": finding.get("severity", "low"),
+                "description": finding.get("description", "Correctness concern"),
+                "source": "engine:correctness",
+                "engine_confidence": correctness_result.confidence,
+            })
+
+    # Run certification engine — evaluate certification readiness
+    cert_ctx = {
+        "code": code,
+        "filepath": filepath,
+        "candidate_outputs": [code],
+    }
+    cert_result = registry.run_engine("certification", cert_ctx)
+    if cert_result.findings:
+        for finding in cert_result.findings[:3]:
+            engine_findings.append({
+                "category": "certification",
+                "severity": finding.get("severity", "low"),
+                "description": finding.get("description", "Certification gap"),
+                "source": "engine:certification",
+                "engine_confidence": cert_result.confidence,
+            })
+
+    # Run meta-evaluation engine — evaluate the evaluation itself
+    meta_ctx = {
+        "code": code,
+        "filepath": filepath,
+        "previous_results": [
+            adv_result.to_dict(),
+            correctness_result.to_dict(),
+            cert_result.to_dict(),
+        ],
+    }
+    meta_result = registry.run_engine("meta_evaluation", meta_ctx)
+    if meta_result.findings:
+        for finding in meta_result.findings[:2]:
+            engine_findings.append({
+                "category": "meta_evaluation",
+                "severity": finding.get("severity", "low"),
+                "description": finding.get("description", "Meta-evaluation concern"),
+                "source": "engine:meta_evaluation",
+                "engine_confidence": meta_result.confidence,
+            })
+
+    return engine_findings
+
+
 def scan_files(files: list[str], max_issues_per_file: int) -> dict[str, Any]:
-    """Run FableBreaker scan on the given files."""
+    """Run FableBreaker scan on the given files using both skills and engines."""
     scanner = CodeScanner()
+    registry = build_engine_registry()
+
     results: dict[str, Any] = {
         "files_scanned": 0,
         "total_issues": 0,
@@ -83,11 +202,17 @@ def scan_files(files: list[str], max_issues_per_file: int) -> dict[str, Any]:
         "security_score": 0.0,
         "file_results": {},
         "verdict": "PASS",
+        "engines_used": registry.engine_names,
     }
 
     for filepath in files:
         path = Path(filepath)
         if not path.exists() or not path.is_file():
+            continue
+
+        try:
+            code = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, PermissionError):
             continue
 
         try:
@@ -98,11 +223,17 @@ def scan_files(files: list[str], max_issues_per_file: int) -> dict[str, Any]:
 
         results["files_scanned"] += 1
 
-        # Extract issues from scan result
+        # Extract issues from skill-based scan
         file_issues = extract_issues(scan_result, max_issues_per_file)
+
+        # Run native engine pipeline for deeper analysis
+        engine_issues = run_engine_pipeline(code, filepath, registry)
+        file_issues.extend(engine_issues[:max_issues_per_file - len(file_issues)])
+
         results["file_results"][filepath] = {
             "issues": file_issues,
             "summary": scan_result.get("summary", {}),
+            "engine_analysis": len(engine_issues) > 0,
         }
 
         for issue in file_issues:
@@ -134,6 +265,9 @@ def scan_files(files: list[str], max_issues_per_file: int) -> dict[str, Any]:
         results["verdict"] = "WARN"
     else:
         results["verdict"] = "PASS"
+
+    # Add engine summary
+    results["engine_summary"] = registry.summary()
 
     return results
 
@@ -196,6 +330,11 @@ def format_comment(results: dict[str, Any], severity_threshold: str) -> str:
         lines.append("**Verdict:** ⚠️ WARN — High-severity issues found\n\n")
     else:
         lines.append("**Verdict:** ❌ FAIL — Critical issues require attention\n\n")
+
+    # Engine pipeline info
+    engines_used = results.get("engines_used", [])
+    if engines_used:
+        lines.append(f"**Engines:** {', '.join(engines_used)}\n\n")
 
     # Summary table
     lines.append("| Metric | Value |")
