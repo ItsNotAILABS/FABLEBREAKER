@@ -1,0 +1,122 @@
+name: resource-hub-organizer
+version: "1.0.0"
+layer: core-doctrine
+priority: 5
+description: >
+  Organizes ideas into main topics, subtopics, sub-subtopics, collections,
+  and release paths. This is the knowledge architecture engine — it creates
+  navigable, extensible information structures from raw intellectual output.
+
+input:
+  description: >
+    Collection of ideas, artifacts, doctrine, research, outputs, or any
+    intellectual material that needs organized structure and release path.
+  examples:
+    - "Collection of doctrine artifacts needing taxonomy"
+    - "Research outputs needing topical organization"
+    - "Mixed content needing collection and release path assignment"
+    - "Growing knowledge base needing restructuring"
+    - "Public outputs needing audience-specific organization"
+  formats:
+    - text
+    - markdown
+    - json
+    - file-list
+    - mixed-artifacts
+
+output:
+  description: >
+    Organized knowledge architecture with hierarchical taxonomy, collection
+    assignments, release path designations, and navigation structure.
+  formats:
+    - taxonomy-document
+    - structured-markdown
+    - json
+    - directory-structure
+  schema:
+    resource_hub:
+      name: string
+      description: string
+      topics:
+        - name: string
+          description: string
+          subtopics:
+            - name: string
+              description: string
+              sub_subtopics:
+                - name: string
+                  items: list
+          collections:
+            - name: string
+              description: string
+              items: list
+              release_path: string
+      release_paths:
+        - name: string
+          audience: string
+          gate_criteria: list
+          publication_channel: string
+      navigation:
+        primary_paths: list
+        cross_references: list
+        entry_points: list
+
+connectors:
+  - type: files
+    description: "Read artifacts to organize, write taxonomy and navigation structures"
+  - type: github
+    description: "Organize repositories, create directory structures, manage READMEs"
+  - type: drive
+    description: "Organize documents into folder hierarchies with consistent naming"
+  - type: web
+    description: "Publish organized content to web-accessible locations"
+  - type: spreadsheets
+    description: "Track content inventory, release status, and coverage gaps"
+
+organization_principles:
+  - name: three-level-depth
+    description: "Topic → Subtopic → Sub-subtopic. No deeper without strong justification."
+  - name: navigable-first
+    description: "Organization serves findability. If you can't navigate to it in 3 clicks, restructure."
+  - name: release-path-aware
+    description: "Every artifact has a designated release path — internal, public, enterprise, research."
+  - name: collection-over-isolation
+    description: "Related artifacts belong in named collections, not scattered across topics."
+  - name: growth-ready
+    description: "Structure must accommodate 10x growth without reorganization."
+  - name: audience-segmented
+    description: "Different audiences see different views of the same knowledge base."
+
+taxonomy_rules:
+  - "Topics should be noun-based (concepts, domains, systems)"
+  - "Subtopics should be aspect-based (design, implementation, evaluation)"
+  - "Sub-subtopics should be instance-based (specific artifacts, documents, tools)"
+  - "Collections group related items that cross topic boundaries"
+  - "Every item belongs to exactly one topic path AND may belong to multiple collections"
+
+release_path_types:
+  - name: internal
+    audience: "Architect, core team"
+    gate: "Doctrine alignment verified"
+  - name: protected
+    audience: "Licensed partners, enterprise clients"
+    gate: "Moat review passed, IP protection confirmed"
+  - name: public
+    audience: "General public, research community"
+    gate: "Anti-drift review passed, public doctrine writer formatted"
+  - name: research
+    audience: "Academic, research community"
+    gate: "Research map builder validated, citations complete"
+  - name: enterprise
+    audience: "Enterprise clients, B2B"
+    gate: "Productized, documented, supported"
+
+dependencies:
+  - medina-operating-system
+  - anti-drift-reviewer
+  - doctrine-synthesizer
+
+downstream_skills:
+  - public-doctrine-writer
+  - research-map-builder
+  - moat-and-defense-architect

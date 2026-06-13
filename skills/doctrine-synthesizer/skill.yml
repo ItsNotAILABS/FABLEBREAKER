@@ -1,0 +1,112 @@
+name: doctrine-synthesizer
+version: "1.0.0"
+layer: core-doctrine
+priority: 3
+description: >
+  Converts raw ideas into structured doctrine, maps, laws, principles,
+  and publishable frameworks. This is the formalization engine — it takes
+  unstructured thought and produces architectural-grade doctrine artifacts.
+
+input:
+  description: >
+    Raw ideas, notes, conversations, observations, or unstructured concepts
+    that need to be formalized into doctrine.
+  examples:
+    - "Raw idea or insight needing formalization"
+    - "Conversation notes with embedded principles"
+    - "Observations that imply undocumented laws"
+    - "Pattern recognition needing explicit articulation"
+    - "Existing doctrine needing expansion or refinement"
+  formats:
+    - text
+    - markdown
+    - voice-transcript
+    - conversation-log
+    - bullet-notes
+
+output:
+  description: >
+    Formalized doctrine artifacts — maps, laws, principles, frameworks —
+    structured for publication, reference, and inheritance by downstream skills.
+  formats:
+    - doctrine-map
+    - law-specification
+    - principle-set
+    - framework-document
+    - structured-markdown
+  artifact_types:
+    doctrine_map:
+      description: "Visual/textual map showing relationship between concepts, principles, and applications"
+      components:
+        - core_concept
+        - derived_principles
+        - application_domains
+        - inheritance_paths
+        - boundary_conditions
+    law:
+      description: "Formal statement of an invariant truth within the system"
+      components:
+        - statement
+        - mechanism
+        - evidence
+        - exceptions
+        - enforcement
+    principle:
+      description: "Guiding directive that shapes decisions and outputs"
+      components:
+        - statement
+        - rationale
+        - application_examples
+        - anti-patterns
+        - measurement
+    framework:
+      description: "Reusable structure for organizing thought or action in a domain"
+      components:
+        - name
+        - purpose
+        - layers
+        - inputs_outputs
+        - usage_protocol
+        - extension_points
+
+connectors:
+  - type: files
+    description: "Read raw inputs, write formalized doctrine artifacts"
+  - type: github
+    description: "Version doctrine, track evolution, manage doctrine PRs"
+  - type: drive
+    description: "Access raw notes, voice transcripts, and reference materials"
+  - type: web
+    description: "Research validation for external claims within doctrine"
+
+synthesis_protocol:
+  steps:
+    - name: extract
+      description: "Identify all implicit and explicit principles, laws, patterns, and insights in the raw input"
+    - name: classify
+      description: "Categorize each extraction as law, principle, framework, map component, or observation"
+    - name: formalize
+      description: "Convert each classified item into its proper artifact structure"
+    - name: connect
+      description: "Map relationships between new doctrine and existing system architecture"
+    - name: verify
+      description: "Check for internal consistency, doctrine alignment, and compound value"
+    - name: position
+      description: "Determine publication readiness, audience, and release path"
+
+quality_standards:
+  - "Every doctrine artifact must be traceable to source input"
+  - "No circular definitions — every term resolves to grounded meaning"
+  - "Laws must include mechanism, not just declaration"
+  - "Principles must include both positive examples and anti-patterns"
+  - "Frameworks must be extensible without breaking existing implementations"
+
+dependencies:
+  - medina-operating-system
+  - anti-drift-reviewer
+
+downstream_skills:
+  - worldview-expansion-engine
+  - public-doctrine-writer
+  - research-map-builder
+  - moat-and-defense-architect

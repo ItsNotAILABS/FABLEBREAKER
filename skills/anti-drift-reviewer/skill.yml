@@ -1,0 +1,124 @@
+name: anti-drift-reviewer
+version: "1.0.0"
+layer: core-doctrine
+priority: 2
+description: >
+  Audits outputs for depth drift, doctrine drift, structure drift,
+  red-team weakness, and state/context loss. Acts as the quality enforcement
+  layer across all skills and outputs in the ALPHA MEDINA architecture.
+
+input:
+  description: >
+    Any output, artifact, document, architecture spec, roadmap, doctrine map,
+    or skill output that requires quality verification against operating standards.
+  examples:
+    - "Architecture spec to audit for drift"
+    - "Doctrine document to verify alignment"
+    - "Roadmap to check for depth and structure integrity"
+    - "Public output to red-team for weakness"
+    - "Multi-step workflow to check for state/context loss"
+  formats:
+    - text
+    - markdown
+    - json
+    - yaml
+    - code
+
+output:
+  description: >
+    Structured audit report identifying drift types, severity, specific locations,
+    and correction recommendations. Includes pass/fail gates for each drift category.
+  formats:
+    - audit-report
+    - structured-markdown
+    - json
+  schema:
+    audit_result:
+      overall_pass: boolean
+      drift_categories:
+        depth_drift:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          locations: list
+          corrections: list
+        doctrine_drift:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          locations: list
+          corrections: list
+        structure_drift:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          locations: list
+          corrections: list
+        red_team_weakness:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          vulnerabilities: list
+          mitigations: list
+        state_context_loss:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          gaps: list
+          recovery_steps: list
+      summary: string
+      recommended_actions: list
+
+connectors:
+  - type: files
+    description: "Read artifacts to audit, write audit reports"
+  - type: github
+    description: "Review PRs, track drift across versions, enforce quality gates in CI"
+  - type: drive
+    description: "Access doctrine reference library for alignment checks"
+
+audit_dimensions:
+  - name: depth-drift
+    description: "Output becomes shallow, generic, template-like, or loses layered meaning"
+    indicators:
+      - "Bullet points without substance"
+      - "Generic language not tied to specific architecture"
+      - "Missing compound connections"
+      - "Surface-level recommendations"
+
+  - name: doctrine-drift
+    description: "Output contradicts, ignores, or fails to extend established doctrine"
+    indicators:
+      - "Terminology inconsistency with doctrine library"
+      - "Principles violated without acknowledgment"
+      - "New frameworks that don't inherit from existing ones"
+      - "Positioning that contradicts sovereign architecture"
+
+  - name: structure-drift
+    description: "Output loses architectural form and becomes unstructured"
+    indicators:
+      - "Missing hierarchical organization"
+      - "Orphan artifacts with no system connections"
+      - "Inconsistent formatting across similar outputs"
+      - "Loss of input/output/connector specification"
+
+  - name: red-team-weakness
+    description: "Output contains exploitable gaps, unfounded claims, or logical vulnerabilities"
+    indicators:
+      - "Claims without evidence or mechanism"
+      - "Single points of failure without backup"
+      - "Assumptions stated as facts"
+      - "Missing adversarial consideration"
+
+  - name: state-context-loss
+    description: "System forgets prior work, loses thread, or drops multi-step context"
+    indicators:
+      - "References to undefined terms"
+      - "Contradictions with prior outputs"
+      - "Incomplete multi-step sequences"
+      - "Missing dependencies or prerequisites"
+
+dependencies:
+  - medina-operating-system
+
+downstream_skills:
+  - doctrine-synthesizer
+  - mission-roadmap-orchestrator
+  - resource-hub-organizer
+  - core-brain-architect
+  - public-doctrine-writer

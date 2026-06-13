@@ -1,0 +1,106 @@
+{
+  "name": "alpha-medina-skills",
+  "version": "1.0.0",
+  "description": "20 ALPHA MEDINA Architecture-Based Tech Engine Skills",
+  "build_order": {
+    "wave_1": {
+      "name": "Master Operating Stack",
+      "status": "built",
+      "skills": [
+        "medina-operating-system",
+        "anti-drift-reviewer",
+        "doctrine-synthesizer",
+        "mission-roadmap-orchestrator",
+        "resource-hub-organizer"
+      ]
+    },
+    "wave_2": {
+      "name": "Technical Core",
+      "status": "planned",
+      "skills": [
+        "core-brain-architect",
+        "emergence-engineering-reviewer",
+        "entity-body-system-designer",
+        "synthetic-entity-productizer",
+        "organism-company-builder"
+      ]
+    },
+    "wave_3": {
+      "name": "Company / Market / Expansion",
+      "status": "planned",
+      "skills": [
+        "company-genesis-engine",
+        "market-genesis-strategist",
+        "moat-and-defense-architect",
+        "parallax-infrastructure-strategist",
+        "worldview-expansion-engine"
+      ]
+    },
+    "wave_4": {
+      "name": "Public Output / Real-World Ops",
+      "status": "planned",
+      "skills": [
+        "npc-training-engine",
+        "public-doctrine-writer",
+        "research-map-builder",
+        "construction-estimating-reviewer",
+        "project-ops-chief"
+      ]
+    }
+  },
+  "layers": {
+    "core-doctrine": {
+      "description": "Core Doctrine / Intelligence Layer",
+      "skills": [
+        "medina-operating-system",
+        "doctrine-synthesizer",
+        "worldview-expansion-engine",
+        "anti-drift-reviewer",
+        "mission-roadmap-orchestrator"
+      ]
+    },
+    "core-brain": {
+      "description": "Core Brain / Entity Tech Layer",
+      "skills": [
+        "core-brain-architect",
+        "emergence-engineering-reviewer",
+        "entity-body-system-designer",
+        "npc-training-engine",
+        "synthetic-entity-productizer"
+      ]
+    },
+    "company-market": {
+      "description": "Company / Market / Organism Layer",
+      "skills": [
+        "organism-company-builder",
+        "company-genesis-engine",
+        "market-genesis-strategist",
+        "moat-and-defense-architect",
+        "parallax-infrastructure-strategist"
+      ]
+    },
+    "resource-public": {
+      "description": "Resource Hub / Public Output Layer",
+      "skills": [
+        "resource-hub-organizer",
+        "public-doctrine-writer",
+        "research-map-builder"
+      ]
+    },
+    "construction-ops": {
+      "description": "Construction / Real-World Ops Layer",
+      "skills": [
+        "construction-estimating-reviewer",
+        "project-ops-chief"
+      ]
+    }
+  },
+  "design_rule": {
+    "required_components": [
+      "input",
+      "output",
+      "connectors"
+    ],
+    "description": "Each skill needs three things before packaging: Input (what the user gives it), Output (what it produces), Connectors/tools (what external systems it uses)."
+  }
+}

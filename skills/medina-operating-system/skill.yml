@@ -1,0 +1,85 @@
+name: medina-operating-system
+version: "1.0.0"
+layer: core-doctrine
+priority: 1
+description: >
+  Applies the full Alfredo / OIS cognitive operating framework to meaningful work.
+  This is the master skill — all other skills inherit its doctrine, structure,
+  and quality standards. It enforces depth-first thinking, compound expression,
+  and sovereign architecture across every output.
+
+input:
+  description: >
+    Any raw work request, concept, question, architecture challenge, or project brief
+    that requires full-stack cognitive processing.
+  examples:
+    - "Raw idea requiring structured expansion"
+    - "Architecture draft needing doctrine alignment"
+    - "Project scope requiring compound execution framing"
+    - "Business concept needing full-stack cognitive breakdown"
+  formats:
+    - text
+    - markdown
+    - json
+    - yaml
+
+output:
+  description: >
+    Doctrine-aligned, depth-verified, structurally complete response that applies
+    the full operating system: layered thinking, compound architecture, sovereign
+    positioning, and actionable execution structure.
+  formats:
+    - structured-markdown
+    - doctrine-map
+    - architecture-spec
+    - execution-brief
+  quality_gates:
+    - depth_verified: true
+    - doctrine_aligned: true
+    - structure_complete: true
+    - actionable: true
+    - compound_expression: true
+
+connectors:
+  - type: files
+    description: "Read/write doctrine documents, operating system specs, and framework outputs"
+  - type: github
+    description: "Version control for doctrine evolution, skill dependencies, and architecture specs"
+  - type: drive
+    description: "Access to doctrine libraries, reference architectures, and operating system manuals"
+  - type: web
+    description: "Research validation, market context, and external reference integration"
+
+operating_principles:
+  - name: depth-first
+    description: "Never skim. Every output must reflect layered, compounding understanding."
+  - name: sovereign-architecture
+    description: "Outputs serve the architect's vision, not generic patterns or templates."
+  - name: compound-expression
+    description: "Each output compounds value — it should be reusable, stackable, and extensible."
+  - name: doctrine-inheritance
+    description: "All downstream skills inherit these operating principles as law."
+  - name: anti-drift
+    description: "Continuous self-audit against drift in depth, structure, or doctrine alignment."
+
+dependencies: []
+
+downstream_skills:
+  - anti-drift-reviewer
+  - doctrine-synthesizer
+  - mission-roadmap-orchestrator
+  - resource-hub-organizer
+  - core-brain-architect
+  - emergence-engineering-reviewer
+  - entity-body-system-designer
+  - npc-training-engine
+  - synthetic-entity-productizer
+  - organism-company-builder
+  - company-genesis-engine
+  - market-genesis-strategist
+  - moat-and-defense-architect
+  - parallax-infrastructure-strategist
+  - public-doctrine-writer
+  - research-map-builder
+  - construction-estimating-reviewer
+  - project-ops-chief
