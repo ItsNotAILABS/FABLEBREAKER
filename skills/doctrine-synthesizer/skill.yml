@@ -1,105 +1,132 @@
 name: doctrine-synthesizer
-version: "1.0.0"
+version: "2.0.0"
 layer: core-doctrine
 priority: 3
 description: >
-  Converts raw ideas into structured doctrine, maps, laws, principles,
-  and publishable frameworks. This is the formalization engine — it takes
-  unstructured thought and produces architectural-grade doctrine artifacts.
+  The formalization engine for the Fablebreaker Intelligence System.
+  Converts raw ideas, research findings, evaluation data, and protocol
+  observations into structured doctrine — maps, laws, principles, and
+  publishable frameworks. Directly feeds the 14-paper research journal,
+  protocol SDK, and public doctrine output pipeline.
+
+fablebreaker_integration:
+  research_journal:
+    journals:
+      - "Journal of Adversarial Evaluation — adversarial generation doctrine"
+      - "Journal of Benchmark Architecture — game-resistant evaluation design"
+      - "Journal of Certification Systems — trust protocols and governance"
+      - "Journal of Semantic Preservation — evaluator correctness verification"
+      - "Journal of Reproducibility Methods — deterministic generation and API automation"
+    total_papers: 14
+    doi: "10.5281/zenodo.20589250"
+  protocol_sdk:
+    protocols:
+      - name: "OverflowCorridorProtocol"
+        doctrine: "Resource exhaustion reveals evaluator budget assumptions"
+      - name: "ConditionalCascadeProtocol"
+        doctrine: "Exponential branching exposes shallow traversal strategies"
+      - name: "GovernanceCertificationProtocol"
+        doctrine: "Evidence chains must be cryptographically non-repudiable"
+      - name: "PerFamilyScoringProtocol"
+        doctrine: "Aggregate scores hide per-family weakness — always decompose"
+      - name: "APIReproducibilityProtocol"
+        doctrine: "Same seed must produce same dataset on any conforming platform"
+  ast_language:
+    operations: 18
+    doctrine: "Formal semantics enable deterministic evaluation with canonical serialization"
+    key_ops: ["if_zero", "neg", "abs", "sub", "band", "bor", "fold_list", "seq"]
+  tokenomic_doctrine:
+    token_value: "Every token is a unit of compute, attention, memory surface, and action influence"
+    crpt: "Cognitive Return Per Token is the system-level efficiency metric"
+    salience: "Attention is allocated before generation, not during"
+    compression: "Information density must exceed noise threshold"
 
 input:
   description: >
-    Raw ideas, notes, conversations, observations, or unstructured concepts
-    that need to be formalized into doctrine.
+    Raw ideas, evaluation observations, protocol findings, benchmark results,
+    adversarial discoveries, or any Fablebreaker-generated insight that needs
+    formalization into doctrine for the research journal or protocol SDK.
   examples:
-    - "Raw idea or insight needing formalization"
-    - "Conversation notes with embedded principles"
-    - "Observations that imply undocumented laws"
-    - "Pattern recognition needing explicit articulation"
-    - "Existing doctrine needing expansion or refinement"
+    - "Observation from adversarial evaluation needing formal protocol"
+    - "Tokenomic measurement finding needing doctrine formalization"
+    - "Benchmark family behavior pattern needing law specification"
+    - "Governance edge case needing principle codification"
+    - "Cross-benchmark correlation needing framework documentation"
   formats:
     - text
     - markdown
-    - voice-transcript
-    - conversation-log
-    - bullet-notes
+    - evaluation-data
+    - jsonl
+    - python
+    - protocol-output
 
 output:
   description: >
-    Formalized doctrine artifacts — maps, laws, principles, frameworks —
-    structured for publication, reference, and inheritance by downstream skills.
+    Formalized doctrine artifacts — protocol specifications, research paper
+    contributions, governance amendments, tokenomic laws, and publishable
+    framework documents compatible with the Fablebreaker research journal format.
   formats:
     - doctrine-map
+    - protocol-specification
+    - research-paper-section
     - law-specification
-    - principle-set
     - framework-document
-    - structured-markdown
+    - governance-amendment
   artifact_types:
-    doctrine_map:
-      description: "Visual/textual map showing relationship between concepts, principles, and applications"
+    protocol_doctrine:
+      description: "Formal specification for a new or updated Fablebreaker protocol"
       components:
-        - core_concept
-        - derived_principles
-        - application_domains
-        - inheritance_paths
-        - boundary_conditions
-    law:
-      description: "Formal statement of an invariant truth within the system"
-      components:
-        - statement
-        - mechanism
-        - evidence
-        - exceptions
-        - enforcement
-    principle:
-      description: "Guiding directive that shapes decisions and outputs"
+        - protocol_name
+        - adversarial_vector
+        - formal_specification
+        - implementation_reference
+        - verification_method
+        - hash_requirements
+    evaluation_law:
+      description: "Invariant truth discovered through Fablebreaker evaluation"
       components:
         - statement
-        - rationale
-        - application_examples
-        - anti-patterns
-        - measurement
-    framework:
-      description: "Reusable structure for organizing thought or action in a domain"
+        - evidence_from_benchmark
+        - families_affected
+        - mathematical_formulation
+        - enforcement_mechanism
+    tokenomic_principle:
+      description: "Guiding directive for tokenomic measurement and allocation"
       components:
-        - name
-        - purpose
-        - layers
-        - inputs_outputs
-        - usage_protocol
-        - extension_points
+        - statement
+        - formula_reference
+        - threshold_values
+        - measurement_protocol
+        - anti_patterns
 
 connectors:
-  - type: files
-    description: "Read raw inputs, write formalized doctrine artifacts"
+  - type: fablebreaker-sdk
+    description: "Access protocol implementations, scoring data, and evaluation results"
+  - type: research-journal
+    description: "Publish to the 5 Fablebreaker research journals (14 papers)"
+  - type: protocol-registry
+    description: "Register new protocols in ProtocolRegistry"
   - type: github
-    description: "Version doctrine, track evolution, manage doctrine PRs"
-  - type: drive
-    description: "Access raw notes, voice transcripts, and reference materials"
-  - type: web
-    description: "Research validation for external claims within doctrine"
+    description: "Version doctrine, track evolution via PR-based review"
+  - type: tokenomics-engine
+    description: "Access measurement data for evidence-backed doctrine"
+  - type: certification-pipeline
+    description: "Feed governance amendments and protocol updates"
 
 synthesis_protocol:
   steps:
     - name: extract
-      description: "Identify all implicit and explicit principles, laws, patterns, and insights in the raw input"
-    - name: classify
-      description: "Categorize each extraction as law, principle, framework, map component, or observation"
+      description: "Identify all implicit laws, principles, and patterns from Fablebreaker data"
     - name: formalize
-      description: "Convert each classified item into its proper artifact structure"
-    - name: connect
-      description: "Map relationships between new doctrine and existing system architecture"
+      description: "Convert to protocol spec, evaluation law, or tokenomic principle format"
+    - name: mathematize
+      description: "Express as formula where possible (TV, CRPT, Salience, CI, Hash)"
     - name: verify
-      description: "Check for internal consistency, doctrine alignment, and compound value"
-    - name: position
-      description: "Determine publication readiness, audience, and release path"
-
-quality_standards:
-  - "Every doctrine artifact must be traceable to source input"
-  - "No circular definitions — every term resolves to grounded meaning"
-  - "Laws must include mechanism, not just declaration"
-  - "Principles must include both positive examples and anti-patterns"
-  - "Frameworks must be extensible without breaking existing implementations"
+      description: "Test against existing protocol SDK and benchmark families"
+    - name: connect
+      description: "Map to research journal, governance model, and downstream skills"
+    - name: certify
+      description: "SHA-256 lock the doctrine artifact for non-repudiation"
 
 dependencies:
   - medina-operating-system

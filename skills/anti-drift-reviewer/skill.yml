@@ -1,33 +1,62 @@
 name: anti-drift-reviewer
-version: "1.0.0"
+version: "2.0.0"
 layer: core-doctrine
 priority: 2
 description: >
-  Audits outputs for depth drift, doctrine drift, structure drift,
-  red-team weakness, and state/context loss. Acts as the quality enforcement
-  layer across all skills and outputs in the ALPHA MEDINA architecture.
+  The quality enforcement layer for the Fablebreaker Intelligence System.
+  Audits all outputs for depth drift, doctrine drift, structure drift,
+  red-team weakness, state/context loss, and tokenomic waste. Directly
+  integrates with Fablebreaker's certification pipeline, governance model,
+  and CRPT measurement framework to enforce zero-tolerance correctness.
+
+fablebreaker_integration:
+  certification_pipeline:
+    - step: "Public Evaluation — audits scoring methodology and result claims"
+    - step: "Hidden-Seed Challenge — verifies adversarial resilience"
+    - step: "Hash Verification — SHA-256 correctness gate"
+    - step: "Governance Sign-off — evidence chain completeness"
+    - step: "Certification Issued — cryptographic proof chain integrity"
+  governance_model:
+    reference: "GOVERNANCE.md"
+    role: "Enforces role-based authority, dispute resolution, and amendment process compliance"
+  tokenomic_audit:
+    crpt_threshold: "Outputs below CRPT threshold are flagged as tokenomic failures"
+    waste_detection: "Identifies N_t (noise) in Token Value Function"
+    compression_audit: "Verifies output density against compression efficiency targets"
+  adversarial_families:
+    - "dynamic_match_storm — HIGH complexity, MODERATE risk"
+    - "del_erasure_trap — MEDIUM complexity, HIGH risk"
+    - "overflow_corridor — HIGH complexity, HIGH risk"
+    - "nested_conditional_cascade — CRITICAL complexity, CRITICAL risk"
+    - "branch_balance — MEDIUM complexity, LOW risk"
+    - "deep_pair_projection — MEDIUM complexity, LOW risk"
+    - "modular_arithmetic_net — LOW complexity, MINIMAL risk"
+    - "duplication_aliasing — HIGH complexity, MODERATE risk"
 
 input:
   description: >
-    Any output, artifact, document, architecture spec, roadmap, doctrine map,
-    or skill output that requires quality verification against operating standards.
+    Any Fablebreaker output, evaluation result, certification artifact,
+    protocol implementation, tokenomic report, or skill output requiring
+    quality verification against the correctness-first standard.
   examples:
-    - "Architecture spec to audit for drift"
-    - "Doctrine document to verify alignment"
-    - "Roadmap to check for depth and structure integrity"
-    - "Public output to red-team for weakness"
-    - "Multi-step workflow to check for state/context loss"
+    - "Evaluation report to audit for correctness and hash integrity"
+    - "Certification evidence pack to verify completeness"
+    - "CRPT measurement to validate against thresholds"
+    - "Protocol implementation to red-team for adversarial weakness"
+    - "Public output to audit before release"
   formats:
     - text
     - markdown
     - json
     - yaml
-    - code
+    - python
+    - jsonl
+    - evidence-pack
 
 output:
   description: >
-    Structured audit report identifying drift types, severity, specific locations,
-    and correction recommendations. Includes pass/fail gates for each drift category.
+    Structured audit report with pass/fail gates, drift severity classification,
+    CRPT scores, correctness verification results, and actionable corrections.
   formats:
     - audit-report
     - structured-markdown
@@ -35,6 +64,8 @@ output:
   schema:
     audit_result:
       overall_pass: boolean
+      crpt_score: float
+      hash_verified: boolean
       drift_categories:
         depth_drift:
           detected: boolean
@@ -55,63 +86,61 @@ output:
           detected: boolean
           severity: "none | low | medium | high | critical"
           vulnerabilities: list
+          adversarial_families_tested: list
           mitigations: list
+        tokenomic_waste:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          noise_tokens: int
+          waste_percentage: float
+          optimization_recommendations: list
         state_context_loss:
           detected: boolean
           severity: "none | low | medium | high | critical"
           gaps: list
           recovery_steps: list
-      summary: string
+      governance_compliance:
+        evidence_chain_complete: boolean
+        sign_off_valid: boolean
+        dispute_exposure: list
       recommended_actions: list
 
 connectors:
-  - type: files
-    description: "Read artifacts to audit, write audit reports"
+  - type: fablebreaker-sdk
+    description: "Direct access to FableBreakerSDK for protocol verification and scoring"
+  - type: certification-pipeline
+    description: "Evidence pack validation, hash verification, governance sign-off checks"
+  - type: tokenomics-engine
+    description: "CRPT measurement, waste detection, compression audit"
   - type: github
-    description: "Review PRs, track drift across versions, enforce quality gates in CI"
-  - type: drive
-    description: "Access doctrine reference library for alignment checks"
+    description: "PR review gates, CI quality enforcement, version-controlled audit trails"
+  - type: governance
+    description: "Role-based authority verification, dispute resolution compliance"
 
 audit_dimensions:
   - name: depth-drift
-    description: "Output becomes shallow, generic, template-like, or loses layered meaning"
-    indicators:
-      - "Bullet points without substance"
-      - "Generic language not tied to specific architecture"
-      - "Missing compound connections"
-      - "Surface-level recommendations"
+    description: "Output becomes shallow, generic, or template-like — fails CRPT threshold"
+    fablebreaker_connection: "Maps to low DQ + ACT scores in Cognitive Return metrics"
 
   - name: doctrine-drift
-    description: "Output contradicts, ignores, or fails to extend established doctrine"
-    indicators:
-      - "Terminology inconsistency with doctrine library"
-      - "Principles violated without acknowledgment"
-      - "New frameworks that don't inherit from existing ones"
-      - "Positioning that contradicts sovereign architecture"
+    description: "Output contradicts correctness-first principles or Fablebreaker governance"
+    fablebreaker_connection: "Violations of GOVERNANCE.md, PACKET_POLICY.md, or protocol specs"
 
   - name: structure-drift
-    description: "Output loses architectural form and becomes unstructured"
-    indicators:
-      - "Missing hierarchical organization"
-      - "Orphan artifacts with no system connections"
-      - "Inconsistent formatting across similar outputs"
-      - "Loss of input/output/connector specification"
+    description: "Output loses architectural form — missing hash verification, broken evidence chains"
+    fablebreaker_connection: "Certification pipeline integrity failure"
 
   - name: red-team-weakness
-    description: "Output contains exploitable gaps, unfounded claims, or logical vulnerabilities"
-    indicators:
-      - "Claims without evidence or mechanism"
-      - "Single points of failure without backup"
-      - "Assumptions stated as facts"
-      - "Missing adversarial consideration"
+    description: "Output has exploitable gaps — would fail hidden-seed challenge"
+    fablebreaker_connection: "Tests against all 8 adversarial families at CRITICAL threshold"
+
+  - name: tokenomic-waste
+    description: "Output contains noise tokens — high N_t in Token Value Function"
+    fablebreaker_connection: "Direct measurement via compression_efficiency() and waste detection"
 
   - name: state-context-loss
-    description: "System forgets prior work, loses thread, or drops multi-step context"
-    indicators:
-      - "References to undefined terms"
-      - "Contradictions with prior outputs"
-      - "Incomplete multi-step sequences"
-      - "Missing dependencies or prerequisites"
+    description: "System drops context — multi-step certification workflows break"
+    fablebreaker_connection: "RuntimeMeasurementLoop state integrity verification"
 
 dependencies:
   - medina-operating-system

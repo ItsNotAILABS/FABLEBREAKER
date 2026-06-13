@@ -1,115 +1,156 @@
 name: resource-hub-organizer
-version: "1.0.0"
+version: "2.0.0"
 layer: core-doctrine
 priority: 5
 description: >
-  Organizes ideas into main topics, subtopics, sub-subtopics, collections,
-  and release paths. This is the knowledge architecture engine — it creates
-  navigable, extensible information structures from raw intellectual output.
+  The knowledge architecture engine for the Fablebreaker Intelligence System.
+  Organizes all Fablebreaker outputs — protocols, research papers, evaluation
+  reports, certification artifacts, public documentation, and enterprise
+  deliverables — into navigable, extensible structures with audience-specific
+  release paths and user-facing content organization.
+
+fablebreaker_integration:
+  content_architecture:
+    internal:
+      - "Protocol SDK source (14 implementations)"
+      - "Tokenomics engine (TV, CRPT, Salience, Compression)"
+      - "AST Language specification (18 operations)"
+      - "Analysis Engine (10-step pipeline)"
+      - "Adversarial family definitions (8 families)"
+    external_user_facing:
+      - "Public documentation and getting-started guides"
+      - "API reference (/api/v1/* endpoints)"
+      - "Certification submission workflow"
+      - "Research journal (14 papers, 5 journals)"
+      - "Product tier descriptions and onboarding"
+    enterprise:
+      - "Custom benchmark design documentation"
+      - "CI/CD integration guides"
+      - "Evidence-pack signing workflows"
+      - "Private leaderboard infrastructure"
+      - "Regression monitoring setup"
+  user_journeys:
+    developer:
+      entry: "README → Quick Start → pip install → first evaluation"
+      path: "Public Suite → Submit Candidate → Get Score → Improve → Certify"
+    enterprise:
+      entry: "Product page → Contact → Custom suite → CI integration"
+      path: "Assessment → Custom Design → Integration → Monitoring → Certification"
+    researcher:
+      entry: "Research Journal → Foundation Paper → Protocol SDK → Reproduce"
+      path: "Read papers → Use SDK → Run experiments → Contribute → Publish"
+    investor:
+      entry: "Landing → What is this → How it works → Market size → Contact"
+      path: "Credibility check → Technical depth → Business model → Engage"
+  api_endpoints:
+    - "GET /api/v1/health — Service status"
+    - "GET /api/v1/manifest — System capabilities"
+    - "GET /api/v1/status — Evaluation status"
+    - "GET /api/v1/candidates — Registered candidates"
+    - "GET /api/v1/families — Adversarial families"
+    - "POST /api/v1/score — Submit for scoring"
 
 input:
   description: >
-    Collection of ideas, artifacts, doctrine, research, outputs, or any
-    intellectual material that needs organized structure and release path.
+    Collection of Fablebreaker outputs — protocols, papers, evaluation results,
+    certification artifacts, API documentation, user guides, or any intellectual
+    material needing organized structure and audience-specific release paths.
   examples:
-    - "Collection of doctrine artifacts needing taxonomy"
-    - "Research outputs needing topical organization"
-    - "Mixed content needing collection and release path assignment"
-    - "Growing knowledge base needing restructuring"
-    - "Public outputs needing audience-specific organization"
+    - "New protocol needing documentation and user-facing guide"
+    - "Research paper needing journal assignment and public abstract"
+    - "API endpoint needing developer documentation"
+    - "Enterprise feature needing onboarding workflow"
+    - "Marketing content needing landing page organization"
   formats:
     - text
     - markdown
     - json
-    - file-list
+    - python
     - mixed-artifacts
 
 output:
   description: >
-    Organized knowledge architecture with hierarchical taxonomy, collection
-    assignments, release path designations, and navigation structure.
+    Organized content architecture with user journey mapping, audience-specific
+    views, release path designations, and navigation structure optimized for
+    each Fablebreaker user type (developer, enterprise, researcher, investor).
   formats:
     - taxonomy-document
     - structured-markdown
     - json
     - directory-structure
+    - navigation-map
   schema:
     resource_hub:
       name: string
-      description: string
+      fablebreaker_layer: string
       topics:
         - name: string
-          description: string
+          audience: "developer | enterprise | researcher | investor | public"
           subtopics:
             - name: string
-              description: string
-              sub_subtopics:
-                - name: string
-                  items: list
-          collections:
-            - name: string
-              description: string
-              items: list
+              artifacts: list
               release_path: string
+              api_connection: string
+      user_journeys:
+        - persona: string
+          entry_point: string
+          path: list
+          conversion_goal: string
       release_paths:
         - name: string
           audience: string
-          gate_criteria: list
-          publication_channel: string
-      navigation:
-        primary_paths: list
-        cross_references: list
-        entry_points: list
+          gate: string
+          channel: string
 
 connectors:
-  - type: files
-    description: "Read artifacts to organize, write taxonomy and navigation structures"
+  - type: fablebreaker-sdk
+    description: "Access protocol docs, API specs, and scoring interfaces for documentation"
+  - type: api-service
+    description: "Document and organize all /api/v1/* endpoints for users"
+  - type: research-journal
+    description: "Organize 14 papers across 5 journals with navigation"
   - type: github
-    description: "Organize repositories, create directory structures, manage READMEs"
-  - type: drive
-    description: "Organize documents into folder hierarchies with consistent naming"
-  - type: web
-    description: "Publish organized content to web-accessible locations"
-  - type: spreadsheets
-    description: "Track content inventory, release status, and coverage gaps"
+    description: "README structure, directory organization, GitHub Pages"
+  - type: certification-pipeline
+    description: "Document certification workflow for user-facing guides"
+  - type: product-strategy
+    description: "Align content with offer ladder and buyer types"
 
 organization_principles:
-  - name: three-level-depth
-    description: "Topic → Subtopic → Sub-subtopic. No deeper without strong justification."
-  - name: navigable-first
-    description: "Organization serves findability. If you can't navigate to it in 3 clicks, restructure."
-  - name: release-path-aware
-    description: "Every artifact has a designated release path — internal, public, enterprise, research."
-  - name: collection-over-isolation
-    description: "Related artifacts belong in named collections, not scattered across topics."
-  - name: growth-ready
-    description: "Structure must accommodate 10x growth without reorganization."
+  - name: user-journey-first
+    description: "Organize by what users need to do, not by internal architecture"
   - name: audience-segmented
-    description: "Different audiences see different views of the same knowledge base."
+    description: "Developers, enterprises, researchers, and investors see different content"
+  - name: three-click-rule
+    description: "Any user can find what they need in 3 navigation steps or fewer"
+  - name: progressive-disclosure
+    description: "Simple → detailed → deep. Never overwhelm on first contact."
+  - name: conversion-oriented
+    description: "Every content path leads to engagement: star, install, submit, buy, or cite"
+  - name: living-architecture
+    description: "Structure accommodates 10x growth without reorganization"
 
-taxonomy_rules:
-  - "Topics should be noun-based (concepts, domains, systems)"
-  - "Subtopics should be aspect-based (design, implementation, evaluation)"
-  - "Sub-subtopics should be instance-based (specific artifacts, documents, tools)"
-  - "Collections group related items that cross topic boundaries"
-  - "Every item belongs to exactly one topic path AND may belong to multiple collections"
-
-release_path_types:
-  - name: internal
-    audience: "Architect, core team"
-    gate: "Doctrine alignment verified"
-  - name: protected
-    audience: "Licensed partners, enterprise clients"
-    gate: "Moat review passed, IP protection confirmed"
-  - name: public
-    audience: "General public, research community"
-    gate: "Anti-drift review passed, public doctrine writer formatted"
-  - name: research
-    audience: "Academic, research community"
-    gate: "Research map builder validated, citations complete"
-  - name: enterprise
-    audience: "Enterprise clients, B2B"
-    gate: "Productized, documented, supported"
+release_paths:
+  - name: public-open
+    audience: "All developers"
+    gate: "Anti-drift review passed"
+    channel: "GitHub README, docs folder, public API"
+  - name: research-academic
+    audience: "Researchers, academics"
+    gate: "Journal peer review, DOI assigned"
+    channel: "Research journal, arxiv, citations"
+  - name: enterprise-gated
+    audience: "Paying enterprise clients"
+    gate: "Product readiness, support documentation"
+    channel: "Private portal, onboarding flow"
+  - name: marketing-public
+    audience: "Instagram, ads, social media landing"
+    gate: "Messaging review, visual assets ready"
+    channel: "Landing page, social cards, ad creatives"
+  - name: developer-sdk
+    audience: "Developers building on Fablebreaker"
+    gate: "API stability, examples tested"
+    channel: "pip package, API docs, code examples"
 
 dependencies:
   - medina-operating-system

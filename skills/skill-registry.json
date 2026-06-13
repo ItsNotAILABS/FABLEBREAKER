@@ -1,7 +1,56 @@
 {
-  "name": "alpha-medina-skills",
-  "version": "1.0.0",
-  "description": "20 ALPHA MEDINA Architecture-Based Tech Engine Skills",
+  "name": "fablebreaker-intelligence-skills",
+  "version": "2.0.0",
+  "description": "20 ALPHA MEDINA Architecture-Based Tech Engine Skills — wired into the Fablebreaker Intelligence System",
+  "fablebreaker_integration": {
+    "core_engines": [
+      "fablebreaker.engine.AnalysisEngine",
+      "fablebreaker.astlang (18 AST operations)",
+      "fablebreaker.generator (adversarial dataset generation)",
+      "fablebreaker.scorer (per-family scoring + 95% CI)",
+      "fablebreaker.sdk.FableBreakerSDK (unified interface)",
+      "fablebreaker.tokenomics.token_value.TokenValueFunction",
+      "fablebreaker.tokenomics.cognitive_return.CognitiveReturnMetrics",
+      "fablebreaker.tokenomics.salience.SalienceEngine",
+      "fablebreaker.tokenomics.compression.compression_efficiency",
+      "fablebreaker.tokenomics.benchmark.BenchmarkRunner",
+      "fablebreaker.tokenomics.runtime_loop.RuntimeMeasurementLoop"
+    ],
+    "protocols": [
+      "OverflowCorridorProtocol",
+      "ConditionalCascadeProtocol",
+      "GovernanceCertificationProtocol",
+      "PerFamilyScoringProtocol",
+      "APIReproducibilityProtocol"
+    ],
+    "math_engines": {
+      "token_value": "TV(t) = w_d*D_t + w_a*A_t + w_r*R_t + w_c*C_t + w_m*M_t - w_n*N_t",
+      "cognitive_return": "CRPT = (DQ + ACT + RISK + REUSE + LEARN) / (Prompt_Tokens + Output_Tokens)",
+      "salience_allocation": "S_i = α*U_i + β*R_i + γ*M_i + δ*T_i + ε*N_i - ζ*K_i",
+      "budget_distribution": "B_i = B_total * (S_i / Σ(S))",
+      "confidence_interval": "CI_95 = μ ± 1.96 * (σ / √n)",
+      "hash_verification": "SHA-256(canonical(output)) == expected_digest",
+      "tokenomic_gain": "TG = Σ(TV(t)) for t in output_tokens"
+    },
+    "adversarial_families": [
+      {"name": "dynamic_match_storm", "complexity": "HIGH", "risk": "MODERATE"},
+      {"name": "del_erasure_trap", "complexity": "MEDIUM", "risk": "HIGH"},
+      {"name": "duplication_aliasing", "complexity": "HIGH", "risk": "MODERATE"},
+      {"name": "branch_balance", "complexity": "MEDIUM", "risk": "LOW"},
+      {"name": "deep_pair_projection", "complexity": "MEDIUM", "risk": "LOW"},
+      {"name": "modular_arithmetic_net", "complexity": "LOW", "risk": "MINIMAL"},
+      {"name": "overflow_corridor", "complexity": "HIGH", "risk": "HIGH"},
+      {"name": "nested_conditional_cascade", "complexity": "CRITICAL", "risk": "CRITICAL"}
+    ],
+    "api_endpoints": [
+      "GET /api/v1/health",
+      "GET /api/v1/manifest",
+      "GET /api/v1/status",
+      "GET /api/v1/candidates",
+      "GET /api/v1/families",
+      "POST /api/v1/score"
+    ]
+  },
   "build_order": {
     "wave_1": {
       "name": "Master Operating Stack",
@@ -50,7 +99,8 @@
   },
   "layers": {
     "core-doctrine": {
-      "description": "Core Doctrine / Intelligence Layer",
+      "description": "Core Doctrine / Intelligence Layer — powers the Fablebreaker cognitive operating system",
+      "fablebreaker_connection": "Drives all evaluation, certification, and governance decisions",
       "skills": [
         "medina-operating-system",
         "doctrine-synthesizer",
@@ -60,7 +110,8 @@
       ]
     },
     "core-brain": {
-      "description": "Core Brain / Entity Tech Layer",
+      "description": "Core Brain / Entity Tech Layer — synthetic cognition architecture",
+      "fablebreaker_connection": "Designs the brain-body architecture for Fablebreaker's own intelligence",
       "skills": [
         "core-brain-architect",
         "emergence-engineering-reviewer",
@@ -70,7 +121,8 @@
       ]
     },
     "company-market": {
-      "description": "Company / Market / Organism Layer",
+      "description": "Company / Market / Organism Layer — business and market intelligence",
+      "fablebreaker_connection": "Turns Fablebreaker into products across defense, robotics, gaming, enterprise",
       "skills": [
         "organism-company-builder",
         "company-genesis-engine",
@@ -80,7 +132,8 @@
       ]
     },
     "resource-public": {
-      "description": "Resource Hub / Public Output Layer",
+      "description": "Resource Hub / Public Output Layer — user-facing content architecture",
+      "fablebreaker_connection": "Makes Fablebreaker accessible to developers, enterprises, researchers, investors",
       "skills": [
         "resource-hub-organizer",
         "public-doctrine-writer",
@@ -88,7 +141,8 @@
       ]
     },
     "construction-ops": {
-      "description": "Construction / Real-World Ops Layer",
+      "description": "Construction / Real-World Ops Layer — physical world operations",
+      "fablebreaker_connection": "Applies Fablebreaker's correctness-first methodology to real-world projects",
       "skills": [
         "construction-estimating-reviewer",
         "project-ops-chief"
@@ -99,8 +153,9 @@
     "required_components": [
       "input",
       "output",
-      "connectors"
+      "connectors",
+      "fablebreaker_integration"
     ],
-    "description": "Each skill needs three things before packaging: Input (what the user gives it), Output (what it produces), Connectors/tools (what external systems it uses)."
+    "description": "Each skill needs four things: Input, Output, Connectors/tools, and explicit Fablebreaker Integration (math engines, protocols, adversarial families, or API connections)."
   }
 }

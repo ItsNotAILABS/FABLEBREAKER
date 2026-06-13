@@ -1,34 +1,68 @@
 name: mission-roadmap-orchestrator
-version: "1.0.0"
+version: "2.0.0"
 layer: core-doctrine
 priority: 4
 description: >
-  Turns any project into a roadmap, next gates, branches, risks,
-  and compounding execution path. This is the strategic execution engine —
-  it converts vision into structured, actionable paths with decision points.
+  The strategic execution engine for the Fablebreaker Intelligence System.
+  Converts any project, product launch, protocol development, or market
+  expansion into a structured roadmap with gates, branches, risks, and
+  compounding execution paths — all governed by Fablebreaker's certification
+  pipeline and tokenomic measurement framework.
+
+fablebreaker_integration:
+  product_strategy:
+    reference: "PRODUCT_STRATEGY.md"
+    offer_ladder:
+      - "Free Open Suite — public repo, local runner, public dataset"
+      - "Hosted Public Leaderboard — free submissions, limited hidden scoring"
+      - "Certification Report — paid one-time adversarial review"
+      - "Private Red-Team Benchmark — custom adversarial suites"
+      - "Continuous Benchmark Monitoring — subscription hidden/regression suites"
+      - "Enterprise Benchmark Foundry — custom design, CI integration, evidence-pack signing"
+    buyer_types:
+      - "AI labs needing credible agent-evaluation proof"
+      - "Compiler/runtime teams wanting adversarial evaluator benchmarks"
+      - "Devtool companies building code agents"
+      - "Investors checking vendor claims"
+      - "Open-source communities tired of hype benchmarks"
+  certification_gates:
+    - gate: "Public Evaluation"
+      criteria: "Known dataset, open scoring, reproducible results"
+    - gate: "Hidden-Seed Challenge"
+      criteria: "Secret corpus, adversarial generation, zero tolerance"
+    - gate: "Hash Verification"
+      criteria: "SHA-256 lock, canonical serialization match"
+    - gate: "Governance Sign-off"
+      criteria: "Maintainer review, evidence pack complete"
+    - gate: "Certification Issued"
+      criteria: "Cryptographic proof chain, non-repudiation"
+  execution_metrics:
+    primary: "CRPT — Cognitive Return Per Token for each roadmap phase"
+    secondary: "Tokenomic Gain — net value produced vs tokens consumed"
+    risk: "Per-family failure probability across adversarial families"
 
 input:
   description: >
-    Any project, mission, goal, or vision that needs to be converted into
-    an executable roadmap with gates, risks, and compounding structure.
+    Any Fablebreaker project, product launch, protocol development, market
+    expansion, or infrastructure buildout that needs execution architecture.
   examples:
-    - "Project brief needing roadmap decomposition"
-    - "Vision statement needing execution path"
-    - "Existing roadmap needing risk analysis and gate structure"
-    - "Multi-branch initiative needing orchestration"
-    - "Stalled project needing next-gate identification"
+    - "New protocol development needing phased rollout"
+    - "Product tier launch needing market/engineering coordination"
+    - "Enterprise client onboarding needing certification pipeline"
+    - "Research journal publication needing peer review gates"
+    - "Platform expansion needing infrastructure and API roadmap"
   formats:
     - text
     - markdown
     - project-brief
-    - vision-statement
-    - existing-roadmap
+    - product-strategy
+    - protocol-spec
 
 output:
   description: >
-    Complete execution architecture: roadmap with phases, gates between phases,
-    branch points, risk registry, and compounding path showing how early work
-    enables later work.
+    Complete execution architecture with Fablebreaker-native gates (certification
+    pipeline steps), tokenomic measurement at each phase, adversarial risk registry,
+    and compounding paths that leverage existing protocols and infrastructure.
   formats:
     - roadmap-document
     - structured-markdown
@@ -37,54 +71,59 @@ output:
   schema:
     roadmap:
       mission_statement: string
+      fablebreaker_alignment: string
       success_criteria: list
+      tokenomic_targets:
+        crpt_threshold: float
+        total_token_budget: int
+        waste_ceiling: float
       phases:
         - name: string
           objective: string
           deliverables: list
-          duration_estimate: string
-          dependencies: list
-          gate:
-            name: string
+          certification_gate:
+            type: "public_eval | hidden_seed | hash_verify | governance | certification"
             criteria: list
-            decision_type: "pass | conditional | branch | kill"
-      branches:
-        - name: string
-          trigger_condition: string
-          path: list
-          merge_point: string
-      risks:
-        - description: string
+          tokenomic_measurement:
+            expected_crpt: float
+            salience_allocation: string
+          dependencies: list
+      adversarial_risks:
+        - family: string
+          attack_vector: string
           probability: "low | medium | high"
           impact: "low | medium | high | critical"
           mitigation: string
-          owner: string
       compounding_path:
         description: string
-        leverage_points: list
-        accumulation_mechanism: string
+        protocol_leverage: list
+        infrastructure_reuse: list
 
 connectors:
-  - type: files
-    description: "Read project inputs, write roadmap artifacts"
+  - type: fablebreaker-sdk
+    description: "Access scoring, protocols, and analysis for execution measurement"
+  - type: product-strategy
+    description: "Align with PRODUCT_STRATEGY.md offer ladder and buyer types"
+  - type: certification-pipeline
+    description: "Use certification gates as roadmap phase gates"
   - type: github
-    description: "Create issues, milestones, and project boards from roadmap phases"
-  - type: spreadsheets
-    description: "Resource allocation, timeline visualization, risk matrices"
-  - type: drive
-    description: "Access project briefs, prior roadmaps, and reference materials"
+    description: "Create milestones, issues, and project boards from roadmap phases"
+  - type: tokenomics-engine
+    description: "Measure CRPT and tokenomic gain at each phase"
+  - type: api-service
+    description: "Plan API versioning and endpoint rollout"
 
 orchestration_principles:
-  - name: gates-not-deadlines
-    description: "Progress is measured by gate criteria met, not calendar dates"
-  - name: branch-aware
-    description: "Every roadmap acknowledges that paths fork — plan for it"
-  - name: compound-sequencing
-    description: "Order work so early outputs enable and amplify later phases"
-  - name: risk-forward
-    description: "Identify risks early, assign them, and build mitigation into the path"
+  - name: certification-gates
+    description: "Use Fablebreaker's 5-step certification pipeline as universal phase gates"
+  - name: adversarial-risk
+    description: "Map risks to the 8 adversarial families — if it can break a candidate, it can break a project"
+  - name: tokenomic-budgeting
+    description: "Every phase has a token budget. Measure CRPT. Kill phases that waste tokens."
+  - name: compound-protocol-leverage
+    description: "Each phase must leverage existing protocols — never rebuild what exists"
   - name: kill-criteria
-    description: "Every initiative has explicit conditions under which it should be stopped"
+    description: "Explicit stop conditions based on hash verification failure or CRPT collapse"
 
 dependencies:
   - medina-operating-system
