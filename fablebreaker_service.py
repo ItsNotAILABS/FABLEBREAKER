@@ -13,12 +13,14 @@ from pathlib import Path
 from threading import Lock
 from urllib.parse import parse_qs, urlparse
 
+# Import the analysis engine for tokenomics endpoints
+sys.path.insert(0, str(Path(__file__).resolve().parent / "fablebreaker"))
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITE = ROOT / "suites" / "fablebreaker"
 MANIFEST = ROOT / "manifests" / "benchmark-manifest.json"
 
-SERVICE_VERSION = "0.2.0"
+SERVICE_VERSION = "1.0.0"
 API_PREFIX = "/api/v1"
 
 logger = logging.getLogger("fablebreaker_service")
@@ -117,6 +119,15 @@ class FableBreakerHandler(BaseHTTPRequestHandler):
             candidate = query.get("candidate", ["candidates.baseline_candidate"])[0]
             self._handle_score(dataset, candidate)
             return
+        if path == f"{API_PREFIX}/tokenomics/info":
+            self._handle_tokenomics_info()
+            return
+        if path == f"{API_PREFIX}/tokenomics/families":
+            self._handle_tokenomics_families()
+            return
+        if path == f"{API_PREFIX}/tokenomics/criteria":
+            self._handle_tokenomics_criteria()
+            return
 
         self.reply({
             "error": "not_found",
@@ -129,6 +140,16 @@ class FableBreakerHandler(BaseHTTPRequestHandler):
                     f"{API_PREFIX}/candidates",
                     f"{API_PREFIX}/families",
                     f"{API_PREFIX}/score",
+                    f"{API_PREFIX}/tokenomics/info",
+                    f"{API_PREFIX}/tokenomics/families",
+                    f"{API_PREFIX}/tokenomics/criteria",
+                ],
+                "v1_post": [
+                    f"{API_PREFIX}/score",
+                    f"{API_PREFIX}/generate",
+                    f"{API_PREFIX}/tokenomics/analyze",
+                    f"{API_PREFIX}/tokenomics/score",
+                    f"{API_PREFIX}/tokenomics/benchmark",
                 ],
             },
         }, status=404)
@@ -148,8 +169,21 @@ class FableBreakerHandler(BaseHTTPRequestHandler):
         if path == f"{API_PREFIX}/score":
             self._handle_post_score()
             return
+        if path == f"{API_PREFIX}/tokenomics/analyze":
+            self._handle_tokenomics_analyze()
+            return
+        if path == f"{API_PREFIX}/tokenomics/score":
+            self._handle_tokenomics_score()
+            return
+        if path == f"{API_PREFIX}/tokenomics/benchmark":
+            self._handle_tokenomics_benchmark()
+            return
 
-        self.reply({"error": "not_found", "paths": ["/generate", f"{API_PREFIX}/generate", f"{API_PREFIX}/score"]}, status=404)
+        self.reply({"error": "not_found", "paths": [
+            "/generate", f"{API_PREFIX}/generate", f"{API_PREFIX}/score",
+            f"{API_PREFIX}/tokenomics/analyze", f"{API_PREFIX}/tokenomics/score",
+            f"{API_PREFIX}/tokenomics/benchmark",
+        ]}, status=404)
 
     def _handle_health(self) -> None:
         self.reply({
@@ -278,6 +312,188 @@ class FableBreakerHandler(BaseHTTPRequestHandler):
             ]
         )
         self.reply({"ok": code == 0, "out": out, "seed": seed, "count": count, "output": output}, status=200 if code == 0 else 500)
+
+    # -----------------------------------------------------------------
+    # Tokenomics API handlers
+    # -----------------------------------------------------------------
+
+    def _handle_tokenomics_info(self) -> None:
+        """GET /api/v1/tokenomics/info — SDK and tokenomics system information."""
+        from fablebreaker.sdk import FableBreakerSDK
+        sdk = FableBreakerSDK()
+        self.reply(sdk.info())
+
+    def _handle_tokenomics_families(self) -> None:
+        """GET /api/v1/tokenomics/families — Classification of all benchmark families."""
+        from fablebreaker.engine import classify_family
+        families = [
+            "dynamic_match_storm", "del_erasure_trap", "duplication_aliasing",
+            "branch_balance", "deep_pair_projection", "modular_arithmetic_net",
+            "overflow_corridor", "nested_conditional_cascade",
+        ]
+        classifications = {}
+        for family in families:
+            c = classify_family(family)
+            classifications[family] = {
+                "task_type": c.task_type,
+                "complexity": c.complexity.value,
+                "risk": c.risk.value,
+                "modules_needed": c.modules_needed,
+            }
+        self.reply({"families": classifications, "count": len(classifications)})
+
+    def _handle_tokenomics_criteria(self) -> None:
+        """GET /api/v1/tokenomics/criteria — Evaluation criteria definitions."""
+        self.reply({
+            "criteria": {
+                "cognitive_return_per_token": "Useful cognition generated per total token spent",
+                "compression_fidelity": "Degree to which compressed output preserves meaning",
+                "action_conversion_rate": "Percentage of outputs that lead directly to correct action",
+                "risk_preservation": "Ability to stay concise without hiding important uncertainty",
+                "reuse_extraction_rate": "Frequency of converting interactions into reusable rules, templates, or memory",
+                "context_hygiene": "Ability to avoid polluting context with irrelevant information",
+                "adaptive_depth_accuracy": "Ability to expand or compress based on task stakes",
+                "error_avoidance": "Ability to prevent math, scope, logic, or operational mistakes",
+            },
+            "scoring_formula": "Score = DQ + ACT + RISK + REUSE + ACCURACY - WASTE",
+            "crpt_formula": "CRPT = (DQ + ACT + RISK + REUSE + LEARN) / TotalTokens",
+            "tokenomic_gain_formula": "TokenomicGain = (Score_B / Tokens_B) - (Score_A / Tokens_A)",
+        })
+
+    def _handle_tokenomics_analyze(self) -> None:
+        """POST /api/v1/tokenomics/analyze — Analyze a scoring result through tokenomics."""
+        size = int(self.headers.get("Content-Length", "0"))
+        if size == 0:
+            self.reply({"error": "request body required with scoring_result"}, status=400)
+            return
+        payload = json.loads(self.rfile.read(size))
+
+        scoring_result = payload.get("scoring_result")
+        if not scoring_result:
+            self.reply({"error": "scoring_result field required"}, status=400)
+            return
+
+        request_id = str(uuid.uuid4())[:8]
+        logger.info("Tokenomics analyze request %s", request_id)
+
+        try:
+            from fablebreaker.engine import AnalysisEngine
+            engine = AnalysisEngine()
+            report = engine.analyze_scoring_result(scoring_result)
+            result = report.to_dict()
+            result["request_id"] = request_id
+            self.reply(result)
+        except Exception as exc:
+            logger.error("Tokenomics analyze %s failed: %s", request_id, exc)
+            self.reply({"error": str(exc), "request_id": request_id}, status=500)
+
+    def _handle_tokenomics_score(self) -> None:
+        """POST /api/v1/tokenomics/score — Score cognitive return for provided metrics."""
+        size = int(self.headers.get("Content-Length", "0"))
+        if size == 0:
+            self.reply({"error": "request body required"}, status=400)
+            return
+        payload = json.loads(self.rfile.read(size))
+
+        request_id = str(uuid.uuid4())[:8]
+
+        try:
+            from fablebreaker.tokenomics.cognitive_return import (
+                CognitiveReturnMetrics, cognitive_return_per_token,
+            )
+            from fablebreaker.tokenomics.compression import compression_efficiency
+
+            metrics = CognitiveReturnMetrics(
+                decision_quality=float(payload.get("decision_quality", 0)),
+                actionability=float(payload.get("actionability", 0)),
+                risk_control=float(payload.get("risk_control", 0)),
+                reuse_value=float(payload.get("reuse_value", 0)),
+                learning_gain=float(payload.get("learning_gain", 0)),
+            )
+            prompt_tokens = int(payload.get("prompt_tokens", 0))
+            output_tokens = int(payload.get("output_tokens", 0))
+            crpt = cognitive_return_per_token(metrics, prompt_tokens, output_tokens)
+
+            # Optional compression metrics
+            ce = 0.0
+            if "information_retained" in payload:
+                ce = compression_efficiency(
+                    float(payload.get("information_retained", 0)),
+                    float(payload.get("action_clarity", 0)),
+                    float(payload.get("risk_preserved", 0)),
+                    output_tokens,
+                )
+
+            self.reply({
+                "request_id": request_id,
+                "cognitive_return": metrics.cognitive_return,
+                "cognitive_return_normalized": metrics.normalized,
+                "crpt": crpt,
+                "compression_efficiency": ce,
+                "prompt_tokens": prompt_tokens,
+                "output_tokens": output_tokens,
+                "total_tokens": prompt_tokens + output_tokens,
+            })
+        except (ValueError, TypeError) as exc:
+            self.reply({"error": str(exc), "request_id": request_id}, status=400)
+
+    def _handle_tokenomics_benchmark(self) -> None:
+        """POST /api/v1/tokenomics/benchmark — Compare two scoring results."""
+        size = int(self.headers.get("Content-Length", "0"))
+        if size == 0:
+            self.reply({"error": "request body required with baseline and tokenomic scoring results"}, status=400)
+            return
+        payload = json.loads(self.rfile.read(size))
+
+        baseline_result = payload.get("baseline")
+        tokenomic_result = payload.get("tokenomic")
+        if not baseline_result or not tokenomic_result:
+            self.reply({"error": "both 'baseline' and 'tokenomic' scoring results required"}, status=400)
+            return
+
+        request_id = str(uuid.uuid4())[:8]
+        logger.info("Tokenomics benchmark request %s", request_id)
+
+        try:
+            from fablebreaker.engine import AnalysisEngine
+            engine = AnalysisEngine()
+            report_a = engine.analyze_scoring_result(baseline_result)
+            report_b = engine.analyze_scoring_result(tokenomic_result)
+
+            from fablebreaker.tokenomics.benchmark import tokenomic_gain
+            gain = tokenomic_gain(
+                score_b=sum(
+                    fa.get("cognitive_return", 0)
+                    for fa in report_b.family_analyses.values()
+                ),
+                tokens_b=max(1, sum(
+                    fa.get("estimated_tokens", 1)
+                    for fa in report_b.family_analyses.values()
+                )),
+                score_a=sum(
+                    fa.get("cognitive_return", 0)
+                    for fa in report_a.family_analyses.values()
+                ),
+                tokens_a=max(1, sum(
+                    fa.get("estimated_tokens", 1)
+                    for fa in report_a.family_analyses.values()
+                )),
+            )
+
+            self.reply({
+                "request_id": request_id,
+                "baseline_report": report_a.to_dict(),
+                "tokenomic_report": report_b.to_dict(),
+                "tokenomic_gain": gain,
+                "hypothesis_result": (
+                    "CONFIRMED" if gain > 0
+                    else "INCONCLUSIVE" if gain == 0
+                    else "REJECTED"
+                ),
+            })
+        except Exception as exc:
+            logger.error("Tokenomics benchmark %s failed: %s", request_id, exc)
+            self.reply({"error": str(exc), "request_id": request_id}, status=500)
 
     def log_message(self, format: str, *args: object) -> None:  # noqa: A002
         logger.debug(format, *args)
