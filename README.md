@@ -244,6 +244,36 @@ Fablebreaker publishes peer-reviewed research across 5 journals:
 
 📄 **Foundation Paper:** [doi.org/10.5281/zenodo.20589250](https://doi.org/10.5281/zenodo.20589250)
 
+### 🐍 Python Mathematical Models
+
+**All 14 research papers have been implemented as executable Python code.**
+
+Every mathematical model, formula, and algorithm described in the FableBreaker Research Journal is now available as tested, documented Python code:
+
+```python
+from fablebreaker.models import (
+    calculate_seed_entropy,           # Hidden-seed entropy calculations
+    defect_detection_probability,     # Coverage probability models
+    wilson_score_interval,            # Statistical confidence intervals
+    hash_collision_resistance,        # Cryptographic security analysis
+    generate_evidence_chain,          # Tamper-proof audit trails
+    ADVERSARIAL_FAMILIES,             # 8 attack family specifications
+    calculate_reproducibility_score,  # API reproducibility protocols
+)
+```
+
+**Coverage:**
+- ✅ Seed entropy and coverage models
+- ✅ Wilson score confidence intervals
+- ✅ Hash collision resistance (SHA-256)
+- ✅ Cryptographic evidence chains
+- ✅ 8 adversarial family specifications
+- ✅ API reproducibility protocols
+- ✅ 60+ mathematical models from the papers
+
+📚 **Full Documentation:** [fablebreaker/models/README.md](fablebreaker/fablebreaker/models/README.md)  
+📊 **Implementation Summary:** [MATHEMATICAL_MODELS_SUMMARY.md](MATHEMATICAL_MODELS_SUMMARY.md)
+
 ---
 
 ## API Reference
