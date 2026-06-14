@@ -3,6 +3,9 @@
 This module provides Python implementations of the formal mathematical models
 described in the FableBreaker Research Journal papers.
 
+All 14 papers from the FableBreaker Research Journal have their mathematical
+models implemented as executable Python code in this module.
+
 Reference:
     Medina, F. (2026). FableBreaker: A Reproducible Benchmark for
     Semantic-Preserving Evaluator Optimization.
@@ -51,6 +54,34 @@ from .cryptographic_evidence import (
     EvidenceChain,
     EvidenceLink,
 )
+from .adversarial_families import (
+    AdversarialFamily,
+    DifficultyLevel,
+    ADVERSARIAL_FAMILIES,
+    OVERFLOW_CORRIDOR,
+    ERASURE_TRAP,
+    CONDITIONAL_CASCADE,
+    DYNAMIC_MATCH_STORM,
+    DUPLICATION_ALIASING,
+    BRANCH_BALANCE,
+    DEEP_PAIR_PROJECTION,
+    MODULAR_ARITHMETIC,
+    calculate_family_difficulty_score,
+    family_weight_by_difficulty,
+    estimate_required_test_cases,
+    family_interaction_complexity,
+    get_family_by_name,
+)
+from .api_reproducibility import (
+    ReproducibilityContext,
+    ExecutionTrace,
+    calculate_reproducibility_score,
+    generate_api_request_hash,
+    verify_api_reproducibility,
+    calculate_protocol_stability_metric,
+    generate_deterministic_sequence,
+    measure_execution_variance,
+)
 
 __all__ = [
     # Seed entropy models
@@ -90,4 +121,30 @@ __all__ = [
     "chain_append_proof",
     "EvidenceChain",
     "EvidenceLink",
+    # Adversarial family models
+    "AdversarialFamily",
+    "DifficultyLevel",
+    "ADVERSARIAL_FAMILIES",
+    "OVERFLOW_CORRIDOR",
+    "ERASURE_TRAP",
+    "CONDITIONAL_CASCADE",
+    "DYNAMIC_MATCH_STORM",
+    "DUPLICATION_ALIASING",
+    "BRANCH_BALANCE",
+    "DEEP_PAIR_PROJECTION",
+    "MODULAR_ARITHMETIC",
+    "calculate_family_difficulty_score",
+    "family_weight_by_difficulty",
+    "estimate_required_test_cases",
+    "family_interaction_complexity",
+    "get_family_by_name",
+    # API reproducibility models
+    "ReproducibilityContext",
+    "ExecutionTrace",
+    "calculate_reproducibility_score",
+    "generate_api_request_hash",
+    "verify_api_reproducibility",
+    "calculate_protocol_stability_metric",
+    "generate_deterministic_sequence",
+    "measure_execution_variance",
 ]
