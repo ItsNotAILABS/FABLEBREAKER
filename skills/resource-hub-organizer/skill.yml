@@ -1,0 +1,163 @@
+name: resource-hub-organizer
+version: "2.0.0"
+layer: core-doctrine
+priority: 5
+description: >
+  The knowledge architecture engine for the Fablebreaker Intelligence System.
+  Organizes all Fablebreaker outputs — protocols, research papers, evaluation
+  reports, certification artifacts, public documentation, and enterprise
+  deliverables — into navigable, extensible structures with audience-specific
+  release paths and user-facing content organization.
+
+fablebreaker_integration:
+  content_architecture:
+    internal:
+      - "Protocol SDK source (14 implementations)"
+      - "Tokenomics engine (TV, CRPT, Salience, Compression)"
+      - "AST Language specification (18 operations)"
+      - "Analysis Engine (10-step pipeline)"
+      - "Adversarial family definitions (8 families)"
+    external_user_facing:
+      - "Public documentation and getting-started guides"
+      - "API reference (/api/v1/* endpoints)"
+      - "Certification submission workflow"
+      - "Research journal (14 papers, 5 journals)"
+      - "Product tier descriptions and onboarding"
+    enterprise:
+      - "Custom benchmark design documentation"
+      - "CI/CD integration guides"
+      - "Evidence-pack signing workflows"
+      - "Private leaderboard infrastructure"
+      - "Regression monitoring setup"
+  user_journeys:
+    developer:
+      entry: "README → Quick Start → pip install → first evaluation"
+      path: "Public Suite → Submit Candidate → Get Score → Improve → Certify"
+    enterprise:
+      entry: "Product page → Contact → Custom suite → CI integration"
+      path: "Assessment → Custom Design → Integration → Monitoring → Certification"
+    researcher:
+      entry: "Research Journal → Foundation Paper → Protocol SDK → Reproduce"
+      path: "Read papers → Use SDK → Run experiments → Contribute → Publish"
+    investor:
+      entry: "Landing → What is this → How it works → Market size → Contact"
+      path: "Credibility check → Technical depth → Business model → Engage"
+  api_endpoints:
+    - "GET /api/v1/health — Service status"
+    - "GET /api/v1/manifest — System capabilities"
+    - "GET /api/v1/status — Evaluation status"
+    - "GET /api/v1/candidates — Registered candidates"
+    - "GET /api/v1/families — Adversarial families"
+    - "POST /api/v1/score — Submit for scoring"
+
+input:
+  description: >
+    Collection of Fablebreaker outputs — protocols, papers, evaluation results,
+    certification artifacts, API documentation, user guides, or any intellectual
+    material needing organized structure and audience-specific release paths.
+  examples:
+    - "New protocol needing documentation and user-facing guide"
+    - "Research paper needing journal assignment and public abstract"
+    - "API endpoint needing developer documentation"
+    - "Enterprise feature needing onboarding workflow"
+    - "Marketing content needing landing page organization"
+  formats:
+    - text
+    - markdown
+    - json
+    - python
+    - mixed-artifacts
+
+output:
+  description: >
+    Organized content architecture with user journey mapping, audience-specific
+    views, release path designations, and navigation structure optimized for
+    each Fablebreaker user type (developer, enterprise, researcher, investor).
+  formats:
+    - taxonomy-document
+    - structured-markdown
+    - json
+    - directory-structure
+    - navigation-map
+  schema:
+    resource_hub:
+      name: string
+      fablebreaker_layer: string
+      topics:
+        - name: string
+          audience: "developer | enterprise | researcher | investor | public"
+          subtopics:
+            - name: string
+              artifacts: list
+              release_path: string
+              api_connection: string
+      user_journeys:
+        - persona: string
+          entry_point: string
+          path: list
+          conversion_goal: string
+      release_paths:
+        - name: string
+          audience: string
+          gate: string
+          channel: string
+
+connectors:
+  - type: fablebreaker-sdk
+    description: "Access protocol docs, API specs, and scoring interfaces for documentation"
+  - type: api-service
+    description: "Document and organize all /api/v1/* endpoints for users"
+  - type: research-journal
+    description: "Organize 14 papers across 5 journals with navigation"
+  - type: github
+    description: "README structure, directory organization, GitHub Pages"
+  - type: certification-pipeline
+    description: "Document certification workflow for user-facing guides"
+  - type: product-strategy
+    description: "Align content with offer ladder and buyer types"
+
+organization_principles:
+  - name: user-journey-first
+    description: "Organize by what users need to do, not by internal architecture"
+  - name: audience-segmented
+    description: "Developers, enterprises, researchers, and investors see different content"
+  - name: three-click-rule
+    description: "Any user can find what they need in 3 navigation steps or fewer"
+  - name: progressive-disclosure
+    description: "Simple → detailed → deep. Never overwhelm on first contact."
+  - name: conversion-oriented
+    description: "Every content path leads to engagement: star, install, submit, buy, or cite"
+  - name: living-architecture
+    description: "Structure accommodates 10x growth without reorganization"
+
+release_paths:
+  - name: public-open
+    audience: "All developers"
+    gate: "Anti-drift review passed"
+    channel: "GitHub README, docs folder, public API"
+  - name: research-academic
+    audience: "Researchers, academics"
+    gate: "Journal peer review, DOI assigned"
+    channel: "Research journal, arxiv, citations"
+  - name: enterprise-gated
+    audience: "Paying enterprise clients"
+    gate: "Product readiness, support documentation"
+    channel: "Private portal, onboarding flow"
+  - name: marketing-public
+    audience: "Instagram, ads, social media landing"
+    gate: "Messaging review, visual assets ready"
+    channel: "Landing page, social cards, ad creatives"
+  - name: developer-sdk
+    audience: "Developers building on Fablebreaker"
+    gate: "API stability, examples tested"
+    channel: "pip package, API docs, code examples"
+
+dependencies:
+  - medina-operating-system
+  - anti-drift-reviewer
+  - doctrine-synthesizer
+
+downstream_skills:
+  - public-doctrine-writer
+  - research-map-builder
+  - moat-and-defense-architect

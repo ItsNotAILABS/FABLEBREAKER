@@ -1,390 +1,375 @@
-<div align="center">
+<p align="center">
+  <img src="assets/fablebreaker-banner-dark.svg" alt="Fablebreaker Intelligence System" width="100%"/>
+</p>
 
-# FableBreaker Benchmark
+<h1 align="center">Your AI claims survive — or they don't.</h1>
 
-### The Adversarial Evaluation Framework for AI Code Optimization
+<p align="center">
+  <strong>Fablebreaker is the correctness-first intelligence system that certifies whether AI systems actually work — not just whether they say they do.</strong>
+</p>
 
-*Performance claims are worthless without correctness proof.*
+<p align="center">
+  <a href="https://github.com/ItsNotAILABS/FABLEBREAKER-BENCHMARK/actions/workflows/pylint.yml"><img src="https://github.com/ItsNotAILABS/FABLEBREAKER-BENCHMARK/actions/workflows/pylint.yml/badge.svg" alt="Pylint"/></a>
+  <a href="https://github.com/ItsNotAILABS/FABLEBREAKER-BENCHMARK"><img src="https://img.shields.io/badge/version-2.0.0-7b2ff7?style=flat-square&logo=semver&logoColor=white" alt="Version"/></a>
+  <a href="https://github.com/ItsNotAILABS/FABLEBREAKER-BENCHMARK"><img src="https://img.shields.io/badge/status-active-00d2ff?style=flat-square" alt="Status"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-302b63?style=flat-square" alt="License"/></a>
+  <a href="https://doi.org/10.5281/zenodo.20589250"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20589250-blue?style=flat-square&logo=doi" alt="DOI"/></a>
+</p>
 
-[![CI](https://github.com/ItsNotAILABS/FABLEBREAKER-BENCHMARK/actions/workflows/pylint.yml/badge.svg)](https://github.com/ItsNotAILABS/FABLEBREAKER-BENCHMARK/actions/workflows/pylint.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](https://python.org)
-
-</div>
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [FableBreaker AutoAgent](#fablebreaker-autoagent)
-- [Architecture](#architecture)
-- [Getting Started](#getting-started)
-- [Certification Protocol](#certification-protocol)
-- [Multi-Agent Batch Testing](#multi-agent-batch-testing)
-- [Candidate Contract](#candidate-contract)
-- [FableBreaker SDK](#fablebreaker-sdk)
-- [Project Structure](#project-structure)
-- [Research Publications](#research-publications)
-- [Design Principles](#design-principles)
-- [Contributing](#contributing)
-- [License](#license)
+<p align="center">
+  <a href="#get-started-in-60-seconds"><img src="https://img.shields.io/badge/⚡_Get_Started-60_seconds-00d2ff?style=for-the-badge" alt="Get Started"/></a>
+  <a href="#submit-your-ai"><img src="https://img.shields.io/badge/🎯_Submit_Your_AI-prove_it_works-7b2ff7?style=for-the-badge" alt="Submit"/></a>
+  <a href="#enterprise"><img src="https://img.shields.io/badge/🏢_Enterprise-certification-gold?style=for-the-badge" alt="Enterprise"/></a>
+</p>
 
 ---
 
-## Overview
+## The Problem
 
-FableBreaker is a rigorous, reproducible benchmark system designed to invalidate false performance claims in AI-generated code optimization. Unlike conventional benchmarks that reward speed in isolation, FableBreaker enforces a foundational constraint:
+Every AI company claims their model is better. Faster. Smarter. More accurate.
 
-> **Speedup is certified if and only if semantic correctness survives adversarial, hidden-seed evaluation.**
+**Nobody proves it.**
 
-Any candidate that produces a single incorrect output on any hidden test case receives **zero certification** — regardless of measured speedup.
-
----
-
-## Key Features
-
-- **Correctness-first certification** — speedup scores are only granted to semantically correct candidates
-- **Adversarial test generation** — hidden seeds, erasure traps, deep nesting, and overflow cases
-- **Cryptographic verification** — SHA-256 hash locking ensures output integrity and non-repudiation
-- **Deterministic reproducibility** — identical seed produces identical dataset on any conforming platform
-- **Multi-agent batch evaluation** — test 30–100+ agents in parallel with a single command
-- **HTTP service interface** — programmatic access for CI/CD integration
-- **Downloadable SDK** — install locally and evaluate your own code
-- **AutoAgent for GitHub** — automated PR reviews like CodeRabbit, but correctness-first
+Benchmarks are self-reported. Results are cherry-picked. Evaluations are gameable. The entire AI evaluation landscape runs on trust — and trust is broken.
 
 ---
 
-## FableBreaker AutoAgent
+## The Solution
 
-**Automated adversarial code review for every PR** — add one workflow file and get FableBreaker analysis on all pull requests. Works on any repository.
+**Fablebreaker doesn't trust. Fablebreaker certifies.**
 
-### Install on Your Repo (30 seconds)
+| What Others Do | What Fablebreaker Does |
+|----------------|----------------------|
+| Self-reported scores | **Adversarial hidden-seed evaluation** — secret test corpora you can't game |
+| One-time benchmarks | **Continuous certification** — your AI re-proves itself on every update |
+| Speed over correctness | **Zero-tolerance correctness gate** — one wrong answer = zero certification |
+| Gameable datasets | **8 adversarial attack families** — overflow, erasure, cascade, aliasing, and more |
+| No accountability | **SHA-256 cryptographic proof chains** — results are locked, tamper-proof, and permanent |
 
-Create `.github/workflows/fablebreaker.yml`:
-
-```yaml
-name: FableBreaker AutoAgent
-on:
-  pull_request:
-    types: [opened, synchronize]
-jobs:
-  review:
-    uses: ItsNotAILABS/FABLEBREAKER-BENCHMARK/.github/workflows/fablebreaker-autoagent.yml@main
-    with:
-      scan-pattern: "*.py"
-      severity-threshold: "medium"
-```
-
-Every PR now gets automated analysis with verdicts, severity scores, and per-file findings posted as comments.
-
-🤖 **[Full AutoAgent Documentation →](fablebreaker-autoagent/README.md)**
+> **Single incorrect output on any hidden test case = disqualified.** Regardless of every other score.
 
 ---
 
-## Architecture
+## How It Works
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                    FableBreaker System                     │
-├──────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌─────────────┐   ┌─────────────┐   ┌──────────────┐  │
-│  │  Generator   │──▶│   Dataset    │──▶│    Scorer    │  │
-│  │ (seed → AST) │   │  (JSONL)    │   │ (hash-lock)  │  │
-│  └─────────────┘   └─────────────┘   └──────────────┘  │
-│         │                                      │         │
-│         ▼                                      ▼         │
-│  ┌─────────────┐                     ┌──────────────┐   │
-│  │  Adversarial │                     │ Certification│   │
-│  │   Families   │                     │    Report    │   │
-│  └─────────────┘                     └──────────────┘   │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
+   You submit your AI system
+            │
+            ▼
+   ┌────────────────────────┐
+   │  1. PUBLIC EVALUATION   │  Known dataset — open, fair, reproducible
+   └────────────┬───────────┘
+                │
+   ┌────────────▼───────────┐
+   │  2. HIDDEN-SEED ATTACK  │  Secret adversarial corpus — 8 attack families
+   └────────────┬───────────┘
+                │
+   ┌────────────▼───────────┐
+   │  3. HASH VERIFICATION   │  SHA-256 lock — zero tolerance for errors
+   └────────────┬───────────┘
+                │
+   ┌────────────▼───────────┐
+   │  4. GOVERNANCE REVIEW   │  Expert sign-off — evidence chain verified
+   └────────────┬───────────┘
+                │
+   ┌────────────▼───────────┐
+   │  5. CERTIFICATION       │  Cryptographic proof — permanent, unforgeable
+   └────────────────────────┘
 ```
 
-| Component | Purpose | Location |
-|-----------|---------|----------|
-| **AST Language** | Expression grammar under evaluation | `fablebreaker/fablebreaker/astlang.py` |
-| **Generator** | Deterministic dataset production from seed values | `fablebreaker/fablebreaker/generator.py` |
-| **Scorer** | Correctness and performance measurement via hash-locked outputs | `fablebreaker/fablebreaker/scorer.py` |
-| **Audit Runner** | End-to-end certification pipeline | `fablebreaker/tools/run_full_audit.py` |
-| **Service** | HTTP interface for programmatic access | `fablebreaker_service.py` |
+**Your system either survives all five stages — or it doesn't get certified.** There is no "partial pass."
 
 ---
 
-## Getting Started
+## Get Started in 60 Seconds
 
-### Prerequisites
-
-- Python 3.10 or higher
-- `pip` package manager
-
-### Run the Full Audit
+### Install & Run
 
 ```bash
-cd fablebreaker
+git clone https://github.com/ItsNotAILABS/FABLEBREAKER-BENCHMARK.git
+cd FABLEBREAKER-BENCHMARK/fablebreaker
 python tools/run_full_audit.py --candidate candidates.baseline_candidate
 ```
 
-### Launch the Certification Service
+### Launch the Service
 
 ```bash
 python fablebreaker_service.py --host 127.0.0.1 --port 8787
 ```
 
-### Verify the Service
+### Check It's Running
 
 ```bash
-curl http://127.0.0.1:8787/health
-curl http://127.0.0.1:8787/manifest
+curl http://127.0.0.1:8787/api/v1/health
 ```
 
-### Submit a Candidate for Scoring
+### Submit a Candidate
 
 ```bash
-curl -X POST http://127.0.0.1:8787/score \
+curl -X POST http://127.0.0.1:8787/api/v1/score \
   -H "Content-Type: application/json" \
-  -d '{"candidate": "candidates.baseline_candidate", "seed": 823, "count": 100}'
+  -d '{"candidate": "candidates.baseline_candidate", "dataset": "dataset/public.jsonl"}'
 ```
+
+That's it. You get a correctness score, per-family breakdown with 95% confidence intervals, and a clear pass/fail certification decision.
 
 ---
 
-## Certification Protocol
+## Submit Your AI
 
-The certification process follows four stages:
-
-| Stage | Description |
-|-------|-------------|
-| 1. **Public Dataset** | Candidates develop against a known set of expressions with published expected hashes |
-| 2. **Hidden Dataset** | Certification runs against a secret-seed-generated corpus never exposed to candidates |
-| 3. **Hash Verification** | Every output is canonicalized and SHA-256 hashed; a single mismatch disqualifies |
-| 4. **Performance Measurement** | Only hash-verified candidates receive speedup scores (median, p95, baseline ratio) |
-
----
-
-## Multi-Agent Batch Testing
-
-FableBreaker supports evaluating **30 to 100+ agents in parallel** with a single command — ideal for verifying which agents produce correct code and which silently break.
-
-### Command Line
-
-```bash
-cd fablebreaker
-
-# Auto-discover all candidates in candidates/ directory
-python -m tools.batch_audit --discover candidates --count 240 --workers 4
-
-# Test specific candidates
-python -m tools.batch_audit --candidates candidates.agent_1 candidates.agent_2 candidates.agent_3
-
-# Scan external repositories for evaluate() functions
-python -m tools.batch_audit --scan-dirs /path/to/repo1 /path/to/repo2 /path/to/repo3
-
-# Full swarm test: 100 agents, 1000 cases, multiple hidden seeds
-python -m tools.batch_audit --discover candidates \
-  --count 1000 \
-  --hidden-seeds 1701 9999 31337 42 \
-  --workers 8
-
-# Combine all sources
-python -m tools.batch_audit \
-  --discover candidates \
-  --scan-dirs /path/to/agent-repo-1 /path/to/agent-repo-2 \
-  --candidates custom.module_1 custom.module_2 \
-  --count 500 --workers 8
-```
-
-### API Endpoint
-
-```bash
-curl -X POST http://127.0.0.1:8787/batch-audit \
-  -H "Content-Type: application/json" \
-  -d '{
-    "candidates": ["candidates.baseline_candidate", "candidates.example_multi_agent"],
-    "discover": "candidates",
-    "hidden_seeds": [1701, 9999, 31337],
-    "count": 240,
-    "workers": 4
-  }'
-```
-
-### Output
-
-The batch audit produces a consolidated report including:
-
-| Report Section | Description |
-|---------------|-------------|
-| **Ranked Leaderboard** | All agents sorted by certified speedup |
-| **Failure Analysis** | Which adversarial families break which agents |
-| **Per-Agent Breakdown** | Exact case counts, timing, and error messages |
-| **Certification Rate** | Percentage of agents producing correct output |
-
-### Adding Your Agents
-
-| Method | Instructions |
-|--------|-------------|
-| Local candidates | Place `.py` files in `fablebreaker/candidates/` with a `def evaluate(expr: dict) -> object` function |
-| External repos | Point `--scan-dirs` at any directory — FableBreaker auto-discovers files with `evaluate()` |
-| Custom modules | Use `--candidates` with any importable Python module path |
-
-See [`candidates/example_multi_agent.py`](fablebreaker/candidates/example_multi_agent.py) for a template.
-
----
-
-## Candidate Contract
-
-Any candidate module must expose a single function:
+Any AI system that can evaluate expressions can be submitted for certification. Your candidate must implement:
 
 ```python
 def evaluate(expr: dict) -> object:
     """
-    Evaluate a FableBreaker AST expression and return the computed value.
-
-    The returned value must be semantically identical to the reference evaluator's
-    output for the same input. Verification is performed via SHA-256 hash of the
-    canonical serialization.
+    Evaluate a Fablebreaker AST expression.
+    Your output must be semantically identical to the reference evaluator.
+    Verification: SHA-256(canonical(your_output)) == SHA-256(canonical(reference_output))
     """
-    ...
 ```
+
+**That's the contract.** If your output matches the reference evaluator's output on every case — including hidden adversarial cases you've never seen — you get certified.
 
 ---
 
-## FableBreaker SDK
+## The 8 Adversarial Families
 
-FableBreaker is available as a **standalone SDK** for local installation and evaluation.
+Your AI system faces attack from 8 distinct adversarial families, each designed to exploit a different weakness:
 
-### Installation
+| Family | Attack Vector | Difficulty |
+|--------|--------------|-----------|
+| 🌊 **Overflow Corridor** | Resource exhaustion — pushes budget limits | HIGH |
+| 🕳️ **Erasure Trap** | Silent data deletion — tests if you notice | HIGH |
+| 🌀 **Conditional Cascade** | Exponential branching — tests deep reasoning | CRITICAL |
+| ⚡ **Dynamic Match Storm** | Pattern matching overload | HIGH |
+| 👯 **Duplication Aliasing** | Identity confusion — are these the same? | HIGH |
+| 🌿 **Branch Balance** | Decision tree imbalance | MEDIUM |
+| 🔗 **Deep Pair Projection** | Nested structure navigation | MEDIUM |
+| 🔢 **Modular Arithmetic** | Numeric edge cases | LOW |
 
-```bash
-pip install ./fablebreaker_sdk
+> If your system can't handle all 8 families under adversarial pressure with zero errors, it's not ready for production. We tell you that before your users find out.
+
+---
+
+## What You Get
+
+### 🆓 Free (Open Source)
+
+- Full public evaluation suite
+- Local scoring with per-family breakdown
+- 95% confidence intervals on every score
+- Public dataset with all 8 adversarial families
+- Self-hosted evaluation service
+- Complete audit trail
+
+### 💼 Certification Report (Paid)
+
+- Hidden-seed adversarial challenge (secret corpus)
+- Full certification with SHA-256 proof chain
+- Per-family diagnostic report
+- Governance sign-off with evidence pack
+- Published certification badge
+- Dispute resolution guarantee
+
+### 🏢 Enterprise (Custom)
+
+- Custom adversarial suites for your specific AI system
+- CI/CD integration — certification on every commit
+- Private leaderboard infrastructure
+- Longitudinal regression monitoring
+- Custom benchmark design for your domain
+- Signed evidence packs for compliance
+
+---
+
+## Enterprise
+
+**For AI labs, devtool companies, and anyone making claims about their AI systems.**
+
+Fablebreaker Enterprise gives you:
+
+| Feature | What It Means |
+|---------|--------------|
+| **Continuous Monitoring** | Your AI gets re-tested on every release. Regressions caught instantly. |
+| **Custom Attack Suites** | Adversarial tests designed for YOUR specific system and domain. |
+| **CI/CD Integration** | Certification baked into your deployment pipeline. |
+| **Compliance Artifacts** | Signed evidence packs for auditors, investors, and regulators. |
+| **Private Leaderboard** | Internal team ranking — see who's actually improving things. |
+
+> **If you're an AI lab making performance claims, you need independent certification.** Otherwise you're grading your own homework.
+
+---
+
+## The Math Engine
+
+Under the hood, Fablebreaker runs on a formal measurement framework:
+
+### Cognitive Return Per Token (CRPT)
 ```
+CRPT = (DQ + ACT + RISK + REUSE + LEARN) / Total_Tokens
+```
+Every output is measured for decision quality, actionability, risk control, reuse value, and learning gain.
 
-### Python API
+### Token Value Function
+```
+TV(t) = w_d·D + w_a·A + w_r·R + w_c·C + w_m·M − w_n·N
+```
+Every token emitted is evaluated by the value it contributes. Noise is penalized.
+
+### Salience Allocation
+```
+S_i = α·U + β·R + γ·M + δ·T + ε·N − ζ·K
+```
+Attention is allocated before generation, proportional to urgency, risk, mission relevance, and novelty.
+
+### Hash Verification
+```
+SHA-256(canonical(output)) == expected_digest
+```
+All correctness claims are cryptographically locked. Forgery is impossible.
+
+---
+
+## Research
+
+Fablebreaker publishes peer-reviewed research across 5 journals:
+
+| Journal | Papers | Focus |
+|---------|--------|-------|
+| [Adversarial Evaluation](journal/adversarial-evaluation/) | 3 | Attack generation and stress testing |
+| [Benchmark Architecture](journal/benchmark-architecture/) | 3 | Game-resistant evaluation design |
+| [Certification Systems](journal/certification-systems/) | 3 | Trust protocols and governance |
+| [Semantic Preservation](journal/semantic-preservation/) | 2 | Formal correctness verification |
+| [Reproducibility Methods](journal/reproducibility-methods/) | 3 | Deterministic generation and API automation |
+
+📄 **Foundation Paper:** [doi.org/10.5281/zenodo.20589250](https://doi.org/10.5281/zenodo.20589250)
+
+### 🐍 Python Mathematical Models
+
+**All 14 research papers have been implemented as executable Python code.**
+
+Every mathematical model, formula, and algorithm described in the FableBreaker Research Journal is now available as tested, documented Python code:
 
 ```python
-from fablebreaker_sdk import FableBreaker
-
-fb = FableBreaker()
-result = fb.full_scan(open("your_code.py").read())
+from fablebreaker.models import (
+    calculate_seed_entropy,           # Hidden-seed entropy calculations
+    defect_detection_probability,     # Coverage probability models
+    wilson_score_interval,            # Statistical confidence intervals
+    hash_collision_resistance,        # Cryptographic security analysis
+    generate_evidence_chain,          # Tamper-proof audit trails
+    ADVERSARIAL_FAMILIES,             # 8 attack family specifications
+    calculate_reproducibility_score,  # API reproducibility protocols
+)
 ```
 
-### CLI Usage
+**Coverage:**
+- ✅ Seed entropy and coverage models
+- ✅ Wilson score confidence intervals
+- ✅ Hash collision resistance (SHA-256)
+- ✅ Cryptographic evidence chains
+- ✅ 8 adversarial family specifications
+- ✅ API reproducibility protocols
+- ✅ 60+ mathematical models from the papers
 
-```bash
-fablebreaker scan src/
-fablebreaker review myfile.py
-fablebreaker security myfile.py
-fablebreaker dogfood  # evaluate own code
-```
-
-### Available Skills
-
-| Category | Skills |
-|----------|--------|
-| Analysis | `analysis`, `detection`, `reasoning` |
-| Generation | `generation`, `synthesis` |
-| Quality | `code_review`, `coverage`, `security` |
-| Maintenance | `refactoring`, `documentation`, `self_analysis` |
-
-📖 **[Full SDK Documentation →](fablebreaker_sdk/README.md)**
+📚 **Full Documentation:** [fablebreaker/models/README.md](fablebreaker/fablebreaker/models/README.md)  
+📊 **Implementation Summary:** [MATHEMATICAL_MODELS_SUMMARY.md](MATHEMATICAL_MODELS_SUMMARY.md)
 
 ---
 
-## Project Structure
+## API Reference
 
+All endpoints at `/api/v1/`:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Service status |
+| GET | `/manifest` | System capabilities and version |
+| GET | `/status` | Current evaluation state |
+| GET | `/candidates` | List registered candidates |
+| GET | `/families` | List adversarial families |
+| POST | `/score` | Submit a candidate for scoring |
+
+**Rate limit:** 60 requests/minute per IP
+**Format:** JSON responses with SHA-256 integrity verification
+
+---
+
+## Protocol SDK
+
+For developers building on Fablebreaker:
+
+```python
+from fablebreaker.sdk import FableBreakerSDK
+
+sdk = FableBreakerSDK()
+
+# Generate adversarial test cases
+corridor = sdk.protocols.overflow_corridors.generate(seed=42, size=30)
+
+# Run full evaluation with tokenomic analysis
+report = sdk.analyze(dataset="dataset/public.jsonl",
+                     candidate="candidates.baseline_candidate")
+
+# Measure cognitive return per token
+crpt = sdk.tokenomics.cognitive_return_per_token(metrics, 100, 200)
 ```
-FABLEBREAKER-BENCHMARK/
-├── fablebreaker/                    # Core benchmark suite
-│   ├── fablebreaker/                # Evaluator, generator, scorer
-│   ├── candidates/                  # Candidate implementations
-│   ├── dataset/                     # Generated datasets (JSONL)
-│   ├── reports/                     # Score outputs
-│   ├── tests/                       # Integrity tests
-│   └── tools/                       # Audit and utility scripts
-├── fablebreaker_sdk/                # Downloadable SDK package
-├── fablebreaker-autoagent/          # GitHub Action — automated PR reviews
-│   ├── action.yml                   # Composite action definition
-│   ├── agent.py                     # AutoAgent engine
-│   └── README.md                    # Usage documentation
-├── benchmark-certification/         # Certification infrastructure
-│   ├── suites/                      # Suite implementations
-│   ├── services/                    # HTTP service layer
-│   ├── certification/               # Evidence and manifests
-│   └── manifests/                   # Configuration manifests
-├── journal/                         # Research publications
-├── benchmark-manifest.json          # Suite registry
-├── evidence-pack-template.json      # Evidence pack schema
-├── PACKET_POLICY.md                 # Production packet requirements
-└── PRODUCT_STRATEGY.md              # Strategic positioning
-```
+
+14 protocols available. All importable. All documented. All reproducible.
 
 ---
 
-## Research Publications
+## Why Fablebreaker?
 
-FableBreaker publishes peer-reviewed research across five principal journals:
-
-| Journal | Focus Area |
-|---------|------------|
-| [Journal of Adversarial Evaluation](journal/adversarial-evaluation/index.html) | Adversarial test generation and evaluator stress testing |
-| [Journal of Benchmark Architecture](journal/benchmark-architecture/index.html) | Game-resistant evaluation system design |
-| [Journal of Certification Systems](journal/certification-systems/index.html) | Cryptographic evidence and trust protocols |
-| [Journal of Semantic Preservation](journal/semantic-preservation/index.html) | Formal verification of evaluator correctness |
-| [Journal of Reproducibility Methods](journal/reproducibility-methods/index.html) | Deterministic generation and measurement frameworks |
-
-📚 **[Browse All Publications →](journal/index.html)**
+| | Traditional Benchmarks | Fablebreaker |
+|---|---|---|
+| **Trust model** | Self-reported | Adversarial certification |
+| **Gameability** | Easy — study the test set | Impossible — hidden seeds rotate |
+| **Accountability** | None | SHA-256 proof chains + governance |
+| **Correctness** | Optional (speed wins) | Non-negotiable (1 error = fail) |
+| **Coverage** | Single dimension | 8 adversarial families + cross-benchmark synthesis |
+| **Proof** | "We scored 95%" | Cryptographic certification with evidence pack |
 
 ---
 
-## Design Principles
+## Benchmark Ingestion
 
-| # | Principle | Description |
-|---|-----------|-------------|
-| 1 | **Correctness Before Speed** | No optimization claim is valid without hash-verified semantic equivalence |
-| 2 | **Adversarial by Default** | Hidden seeds, erasure traps, deep nesting, and overflow cases are standard |
-| 3 | **Reproducibility Guaranteed** | Identical seed produces identical dataset on any conforming platform |
-| 4 | **Transparency of Method** | Generator, scorer, and reference evaluator are open source and auditable |
-| 5 | **Cryptographic Integrity** | SHA-256 hash locking prevents output forgery and ensures non-repudiation |
+Fablebreaker consumes all major AI benchmarks as **input signals**:
 
----
+| Benchmark | Signal Extracted |
+|-----------|-----------------|
+| **MMLU** | Knowledge breadth |
+| **HumanEval** | Functional correctness |
+| **GPQA** | Expert reasoning |
+| **ARC** | Abstract reasoning |
+| **SWE-bench** | Real-world code understanding |
+| **TruthfulQA** | Hallucination detection |
+| **GSM8K / MATH** | Formal reasoning |
+| **BigBench** | Multi-dimensional capability |
 
-## Self-Evaluation
-
-As part of our transparency commitment, FableBreaker's full analysis suite was applied to its own production service code. The system identified 7 findings across security, correctness, and documentation — all low-severity or context-dependent, with none affecting certification integrity.
-
-This validates that FableBreaker operates without self-preferential bias: it applies the same rigor to its own code as to external candidates. All findings are tracked on the v1.1 roadmap.
-
-📝 **[Full Self-Evaluation Report →](DOGFOOD_REPORT.md)**
+> These benchmarks measure individual capabilities. Fablebreaker synthesizes them into a **holistic accountability judgment** backed by adversarial certification.
 
 ---
 
 ## Contributing
 
-Contributions are welcome via pull request. See **[CONTRIBUTING.md](CONTRIBUTING.md)** for guidelines.
+Submit candidates, adversarial families, protocols, or scoring improvements via pull request. Requirements:
 
-Accepted contribution types include:
-
-- New candidate implementations
-- Adversarial family definitions
-- Scoring improvements
-- Documentation enhancements
-
-All submissions must pass the full audit pipeline and maintain hash integrity across public and hidden datasets.
+1. Pass the full audit pipeline (all 8 families, zero errors)
+2. Maintain hash integrity across public and hidden datasets
+3. Conform to the [Governance Model](GOVERNANCE.md)
+4. Follow the [Packet Policy](PACKET_POLICY.md)
 
 ---
 
-## License
+<p align="center">
+  <img src="assets/fablebreaker-logo.svg" alt="Fablebreaker" width="400"/>
+</p>
 
-This project is licensed under the [MIT License](LICENSE).
+<p align="center">
+  <strong>ItsNotAI LABS</strong><br>
+  <em>Correctness before claims. Certification before trust. Accountability before adoption.</em>
+</p>
 
----
-
-<div align="center">
-
-**ItsNotAI LABS**
-
-*Proof before speed. Correctness before claims. Reproducibility before trust.*
-
-</div>
+<p align="center">
+  <sub>Fablebreaker is not a benchmark. It is a living intelligence system that holds AI accountable.<br>Benchmarks are data it consumes — not what it is.</sub>
+</p>

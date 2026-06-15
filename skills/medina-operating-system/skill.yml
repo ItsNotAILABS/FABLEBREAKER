@@ -1,0 +1,129 @@
+name: medina-operating-system
+version: "2.0.0"
+layer: core-doctrine
+priority: 1
+description: >
+  The sovereign cognitive operating framework powering Fablebreaker Intelligence.
+  This is the master skill — the living architecture that drives correctness-first
+  evaluation, tokenomic measurement, adversarial certification, and every internal
+  engine. All other skills inherit its doctrine. It enforces depth-first processing,
+  compound expression, and sovereign architecture across every output.
+
+fablebreaker_integration:
+  core_engines:
+    - module: "fablebreaker.engine.AnalysisEngine"
+      role: "Routes all evaluation through the 10-step tokenomic measurement pipeline"
+    - module: "fablebreaker.tokenomics.token_value.TokenValueFunction"
+      role: "Computes TV(t) = w_d*D_t + w_a*A_t + w_r*R_t + w_c*C_t + w_m*M_t - w_n*N_t"
+    - module: "fablebreaker.tokenomics.cognitive_return.CognitiveReturnMetrics"
+      role: "Scores CR = DQ + ACT + RISK + REUSE + LEARN across five categories"
+    - module: "fablebreaker.tokenomics.salience.SalienceEngine"
+      role: "Allocates attention budget: S_i = α*U + β*R + γ*M + δ*T + ε*N - ζ*K"
+    - module: "fablebreaker.tokenomics.compression.compression_efficiency"
+      role: "Audits output compression quality against information density targets"
+    - module: "fablebreaker.sdk.FableBreakerSDK"
+      role: "Unified programmatic interface for all consumers"
+  protocols:
+    - "OverflowCorridorProtocol — adversarial overflow generation"
+    - "ConditionalCascadeProtocol — nested conditional stress testing"
+    - "GovernanceCertificationProtocol — evidence chain + sign-off"
+    - "PerFamilyScoringProtocol — per-family breakdown with 95% CI"
+    - "APIReproducibilityProtocol — deterministic HTTP automation"
+  math_engines:
+    token_value: "TV(t) = w_d*D_t + w_a*A_t + w_r*R_t + w_c*C_t + w_m*M_t - w_n*N_t"
+    cognitive_return: "CRPT = (DQ + ACT + RISK + REUSE + LEARN) / (Prompt_Tokens + Output_Tokens)"
+    salience_allocation: "S_i = α*U_i + β*R_i + γ*M_i + δ*T_i + ε*N_i - ζ*K_i"
+    budget_distribution: "B_i = B_total * (S_i / Σ(S))"
+    confidence_interval: "CI_95 = μ ± 1.96 * (σ / √n)"
+    hash_verification: "SHA-256(canonical(output)) == expected_digest"
+
+input:
+  description: >
+    Any work request that requires Fablebreaker's full cognitive processing —
+    evaluation challenges, architecture decisions, certification workflows,
+    tokenomic analysis, protocol development, or system-level reasoning.
+  examples:
+    - "Candidate submission requiring adversarial evaluation"
+    - "Architecture decision needing tokenomic cost/benefit analysis"
+    - "Protocol development requiring formal specification"
+    - "Certification workflow needing governance orchestration"
+    - "Market positioning requiring doctrine-aligned narrative"
+  formats:
+    - text
+    - markdown
+    - json
+    - yaml
+    - python
+    - jsonl
+
+output:
+  description: >
+    Doctrine-aligned, depth-verified, structurally complete response processed
+    through the full Fablebreaker pipeline: tokenomic measurement, salience
+    allocation, correctness verification, and compound architecture.
+  formats:
+    - structured-markdown
+    - doctrine-map
+    - architecture-spec
+    - evaluation-report
+    - certification-artifact
+    - tokenomic-analysis
+  quality_gates:
+    - crpt_measured: true
+    - salience_allocated: true
+    - correctness_verified: true
+    - doctrine_aligned: true
+    - compound_value: true
+    - hash_locked: true
+
+connectors:
+  - type: fablebreaker-sdk
+    description: "Direct integration with FableBreakerSDK for protocol access, scoring, and analysis"
+  - type: tokenomics-engine
+    description: "CRPT measurement, salience allocation, token value computation"
+  - type: certification-pipeline
+    description: "Evidence pack generation, SHA-256 locking, governance sign-off"
+  - type: github
+    description: "Version control, CI/CD integration, PR-based certification workflow"
+  - type: api-service
+    description: "HTTP API at /api/v1/* for external integration and automation"
+  - type: files
+    description: "JSONL datasets, evidence packs, certification reports"
+
+operating_principles:
+  - name: correctness-first
+    description: "No claim is valid without hash-verified semantic equivalence. Zero tolerance."
+  - name: tokenomic-awareness
+    description: "Every output is measured by CRPT. Wasted tokens are system failures."
+  - name: adversarial-by-default
+    description: "Hidden seeds, overflow corridors, erasure traps — all outputs survive adversarial pressure."
+  - name: compound-expression
+    description: "Each output compounds value — reusable, stackable, extensible, measurable."
+  - name: sovereign-architecture
+    description: "Fablebreaker serves its own doctrine, not borrowed frameworks."
+  - name: anti-drift
+    description: "Continuous self-audit via the 5-dimension drift detection protocol."
+  - name: governance-backed
+    description: "Formal authority model — decisions are certified, not voted on."
+
+dependencies: []
+
+downstream_skills:
+  - anti-drift-reviewer
+  - doctrine-synthesizer
+  - mission-roadmap-orchestrator
+  - resource-hub-organizer
+  - core-brain-architect
+  - emergence-engineering-reviewer
+  - entity-body-system-designer
+  - npc-training-engine
+  - synthetic-entity-productizer
+  - organism-company-builder
+  - company-genesis-engine
+  - market-genesis-strategist
+  - moat-and-defense-architect
+  - parallax-infrastructure-strategist
+  - public-doctrine-writer
+  - research-map-builder
+  - construction-estimating-reviewer
+  - project-ops-chief

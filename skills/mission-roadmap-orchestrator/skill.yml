@@ -1,0 +1,137 @@
+name: mission-roadmap-orchestrator
+version: "2.0.0"
+layer: core-doctrine
+priority: 4
+description: >
+  The strategic execution engine for the Fablebreaker Intelligence System.
+  Converts any project, product launch, protocol development, or market
+  expansion into a structured roadmap with gates, branches, risks, and
+  compounding execution paths — all governed by Fablebreaker's certification
+  pipeline and tokenomic measurement framework.
+
+fablebreaker_integration:
+  product_strategy:
+    reference: "PRODUCT_STRATEGY.md"
+    offer_ladder:
+      - "Free Open Suite — public repo, local runner, public dataset"
+      - "Hosted Public Leaderboard — free submissions, limited hidden scoring"
+      - "Certification Report — paid one-time adversarial review"
+      - "Private Red-Team Benchmark — custom adversarial suites"
+      - "Continuous Benchmark Monitoring — subscription hidden/regression suites"
+      - "Enterprise Benchmark Foundry — custom design, CI integration, evidence-pack signing"
+    buyer_types:
+      - "AI labs needing credible agent-evaluation proof"
+      - "Compiler/runtime teams wanting adversarial evaluator benchmarks"
+      - "Devtool companies building code agents"
+      - "Investors checking vendor claims"
+      - "Open-source communities tired of hype benchmarks"
+  certification_gates:
+    - gate: "Public Evaluation"
+      criteria: "Known dataset, open scoring, reproducible results"
+    - gate: "Hidden-Seed Challenge"
+      criteria: "Secret corpus, adversarial generation, zero tolerance"
+    - gate: "Hash Verification"
+      criteria: "SHA-256 lock, canonical serialization match"
+    - gate: "Governance Sign-off"
+      criteria: "Maintainer review, evidence pack complete"
+    - gate: "Certification Issued"
+      criteria: "Cryptographic proof chain, non-repudiation"
+  execution_metrics:
+    primary: "CRPT — Cognitive Return Per Token for each roadmap phase"
+    secondary: "Tokenomic Gain — net value produced vs tokens consumed"
+    risk: "Per-family failure probability across adversarial families"
+
+input:
+  description: >
+    Any Fablebreaker project, product launch, protocol development, market
+    expansion, or infrastructure buildout that needs execution architecture.
+  examples:
+    - "New protocol development needing phased rollout"
+    - "Product tier launch needing market/engineering coordination"
+    - "Enterprise client onboarding needing certification pipeline"
+    - "Research journal publication needing peer review gates"
+    - "Platform expansion needing infrastructure and API roadmap"
+  formats:
+    - text
+    - markdown
+    - project-brief
+    - product-strategy
+    - protocol-spec
+
+output:
+  description: >
+    Complete execution architecture with Fablebreaker-native gates (certification
+    pipeline steps), tokenomic measurement at each phase, adversarial risk registry,
+    and compounding paths that leverage existing protocols and infrastructure.
+  formats:
+    - roadmap-document
+    - structured-markdown
+    - json
+    - mermaid-diagram
+  schema:
+    roadmap:
+      mission_statement: string
+      fablebreaker_alignment: string
+      success_criteria: list
+      tokenomic_targets:
+        crpt_threshold: float
+        total_token_budget: int
+        waste_ceiling: float
+      phases:
+        - name: string
+          objective: string
+          deliverables: list
+          certification_gate:
+            type: "public_eval | hidden_seed | hash_verify | governance | certification"
+            criteria: list
+          tokenomic_measurement:
+            expected_crpt: float
+            salience_allocation: string
+          dependencies: list
+      adversarial_risks:
+        - family: string
+          attack_vector: string
+          probability: "low | medium | high"
+          impact: "low | medium | high | critical"
+          mitigation: string
+      compounding_path:
+        description: string
+        protocol_leverage: list
+        infrastructure_reuse: list
+
+connectors:
+  - type: fablebreaker-sdk
+    description: "Access scoring, protocols, and analysis for execution measurement"
+  - type: product-strategy
+    description: "Align with PRODUCT_STRATEGY.md offer ladder and buyer types"
+  - type: certification-pipeline
+    description: "Use certification gates as roadmap phase gates"
+  - type: github
+    description: "Create milestones, issues, and project boards from roadmap phases"
+  - type: tokenomics-engine
+    description: "Measure CRPT and tokenomic gain at each phase"
+  - type: api-service
+    description: "Plan API versioning and endpoint rollout"
+
+orchestration_principles:
+  - name: certification-gates
+    description: "Use Fablebreaker's 5-step certification pipeline as universal phase gates"
+  - name: adversarial-risk
+    description: "Map risks to the 8 adversarial families — if it can break a candidate, it can break a project"
+  - name: tokenomic-budgeting
+    description: "Every phase has a token budget. Measure CRPT. Kill phases that waste tokens."
+  - name: compound-protocol-leverage
+    description: "Each phase must leverage existing protocols — never rebuild what exists"
+  - name: kill-criteria
+    description: "Explicit stop conditions based on hash verification failure or CRPT collapse"
+
+dependencies:
+  - medina-operating-system
+  - anti-drift-reviewer
+
+downstream_skills:
+  - resource-hub-organizer
+  - organism-company-builder
+  - company-genesis-engine
+  - project-ops-chief
+  - synthetic-entity-productizer

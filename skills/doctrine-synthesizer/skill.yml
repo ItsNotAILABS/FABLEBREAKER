@@ -1,0 +1,139 @@
+name: doctrine-synthesizer
+version: "2.0.0"
+layer: core-doctrine
+priority: 3
+description: >
+  The formalization engine for the Fablebreaker Intelligence System.
+  Converts raw ideas, research findings, evaluation data, and protocol
+  observations into structured doctrine — maps, laws, principles, and
+  publishable frameworks. Directly feeds the 14-paper research journal,
+  protocol SDK, and public doctrine output pipeline.
+
+fablebreaker_integration:
+  research_journal:
+    journals:
+      - "Journal of Adversarial Evaluation — adversarial generation doctrine"
+      - "Journal of Benchmark Architecture — game-resistant evaluation design"
+      - "Journal of Certification Systems — trust protocols and governance"
+      - "Journal of Semantic Preservation — evaluator correctness verification"
+      - "Journal of Reproducibility Methods — deterministic generation and API automation"
+    total_papers: 14
+    doi: "10.5281/zenodo.20589250"
+  protocol_sdk:
+    protocols:
+      - name: "OverflowCorridorProtocol"
+        doctrine: "Resource exhaustion reveals evaluator budget assumptions"
+      - name: "ConditionalCascadeProtocol"
+        doctrine: "Exponential branching exposes shallow traversal strategies"
+      - name: "GovernanceCertificationProtocol"
+        doctrine: "Evidence chains must be cryptographically non-repudiable"
+      - name: "PerFamilyScoringProtocol"
+        doctrine: "Aggregate scores hide per-family weakness — always decompose"
+      - name: "APIReproducibilityProtocol"
+        doctrine: "Same seed must produce same dataset on any conforming platform"
+  ast_language:
+    operations: 18
+    doctrine: "Formal semantics enable deterministic evaluation with canonical serialization"
+    key_ops: ["if_zero", "neg", "abs", "sub", "band", "bor", "fold_list", "seq"]
+  tokenomic_doctrine:
+    token_value: "Every token is a unit of compute, attention, memory surface, and action influence"
+    crpt: "Cognitive Return Per Token is the system-level efficiency metric"
+    salience: "Attention is allocated before generation, not during"
+    compression: "Information density must exceed noise threshold"
+
+input:
+  description: >
+    Raw ideas, evaluation observations, protocol findings, benchmark results,
+    adversarial discoveries, or any Fablebreaker-generated insight that needs
+    formalization into doctrine for the research journal or protocol SDK.
+  examples:
+    - "Observation from adversarial evaluation needing formal protocol"
+    - "Tokenomic measurement finding needing doctrine formalization"
+    - "Benchmark family behavior pattern needing law specification"
+    - "Governance edge case needing principle codification"
+    - "Cross-benchmark correlation needing framework documentation"
+  formats:
+    - text
+    - markdown
+    - evaluation-data
+    - jsonl
+    - python
+    - protocol-output
+
+output:
+  description: >
+    Formalized doctrine artifacts — protocol specifications, research paper
+    contributions, governance amendments, tokenomic laws, and publishable
+    framework documents compatible with the Fablebreaker research journal format.
+  formats:
+    - doctrine-map
+    - protocol-specification
+    - research-paper-section
+    - law-specification
+    - framework-document
+    - governance-amendment
+  artifact_types:
+    protocol_doctrine:
+      description: "Formal specification for a new or updated Fablebreaker protocol"
+      components:
+        - protocol_name
+        - adversarial_vector
+        - formal_specification
+        - implementation_reference
+        - verification_method
+        - hash_requirements
+    evaluation_law:
+      description: "Invariant truth discovered through Fablebreaker evaluation"
+      components:
+        - statement
+        - evidence_from_benchmark
+        - families_affected
+        - mathematical_formulation
+        - enforcement_mechanism
+    tokenomic_principle:
+      description: "Guiding directive for tokenomic measurement and allocation"
+      components:
+        - statement
+        - formula_reference
+        - threshold_values
+        - measurement_protocol
+        - anti_patterns
+
+connectors:
+  - type: fablebreaker-sdk
+    description: "Access protocol implementations, scoring data, and evaluation results"
+  - type: research-journal
+    description: "Publish to the 5 Fablebreaker research journals (14 papers)"
+  - type: protocol-registry
+    description: "Register new protocols in ProtocolRegistry"
+  - type: github
+    description: "Version doctrine, track evolution via PR-based review"
+  - type: tokenomics-engine
+    description: "Access measurement data for evidence-backed doctrine"
+  - type: certification-pipeline
+    description: "Feed governance amendments and protocol updates"
+
+synthesis_protocol:
+  steps:
+    - name: extract
+      description: "Identify all implicit laws, principles, and patterns from Fablebreaker data"
+    - name: formalize
+      description: "Convert to protocol spec, evaluation law, or tokenomic principle format"
+    - name: mathematize
+      description: "Express as formula where possible (TV, CRPT, Salience, CI, Hash)"
+    - name: verify
+      description: "Test against existing protocol SDK and benchmark families"
+    - name: connect
+      description: "Map to research journal, governance model, and downstream skills"
+    - name: certify
+      description: "SHA-256 lock the doctrine artifact for non-repudiation"
+
+dependencies:
+  - medina-operating-system
+  - anti-drift-reviewer
+
+downstream_skills:
+  - worldview-expansion-engine
+  - public-doctrine-writer
+  - research-map-builder
+  - moat-and-defense-architect

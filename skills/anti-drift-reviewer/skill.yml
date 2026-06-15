@@ -1,0 +1,153 @@
+name: anti-drift-reviewer
+version: "2.0.0"
+layer: core-doctrine
+priority: 2
+description: >
+  The quality enforcement layer for the Fablebreaker Intelligence System.
+  Audits all outputs for depth drift, doctrine drift, structure drift,
+  red-team weakness, state/context loss, and tokenomic waste. Directly
+  integrates with Fablebreaker's certification pipeline, governance model,
+  and CRPT measurement framework to enforce zero-tolerance correctness.
+
+fablebreaker_integration:
+  certification_pipeline:
+    - step: "Public Evaluation — audits scoring methodology and result claims"
+    - step: "Hidden-Seed Challenge — verifies adversarial resilience"
+    - step: "Hash Verification — SHA-256 correctness gate"
+    - step: "Governance Sign-off — evidence chain completeness"
+    - step: "Certification Issued — cryptographic proof chain integrity"
+  governance_model:
+    reference: "GOVERNANCE.md"
+    role: "Enforces role-based authority, dispute resolution, and amendment process compliance"
+  tokenomic_audit:
+    crpt_threshold: "Outputs below CRPT threshold are flagged as tokenomic failures"
+    waste_detection: "Identifies N_t (noise) in Token Value Function"
+    compression_audit: "Verifies output density against compression efficiency targets"
+  adversarial_families:
+    - "dynamic_match_storm — HIGH complexity, MODERATE risk"
+    - "del_erasure_trap — MEDIUM complexity, HIGH risk"
+    - "overflow_corridor — HIGH complexity, HIGH risk"
+    - "nested_conditional_cascade — CRITICAL complexity, CRITICAL risk"
+    - "branch_balance — MEDIUM complexity, LOW risk"
+    - "deep_pair_projection — MEDIUM complexity, LOW risk"
+    - "modular_arithmetic_net — LOW complexity, MINIMAL risk"
+    - "duplication_aliasing — HIGH complexity, MODERATE risk"
+
+input:
+  description: >
+    Any Fablebreaker output, evaluation result, certification artifact,
+    protocol implementation, tokenomic report, or skill output requiring
+    quality verification against the correctness-first standard.
+  examples:
+    - "Evaluation report to audit for correctness and hash integrity"
+    - "Certification evidence pack to verify completeness"
+    - "CRPT measurement to validate against thresholds"
+    - "Protocol implementation to red-team for adversarial weakness"
+    - "Public output to audit before release"
+  formats:
+    - text
+    - markdown
+    - json
+    - yaml
+    - python
+    - jsonl
+    - evidence-pack
+
+output:
+  description: >
+    Structured audit report with pass/fail gates, drift severity classification,
+    CRPT scores, correctness verification results, and actionable corrections.
+  formats:
+    - audit-report
+    - structured-markdown
+    - json
+  schema:
+    audit_result:
+      overall_pass: boolean
+      crpt_score: float
+      hash_verified: boolean
+      drift_categories:
+        depth_drift:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          locations: list
+          corrections: list
+        doctrine_drift:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          locations: list
+          corrections: list
+        structure_drift:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          locations: list
+          corrections: list
+        red_team_weakness:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          vulnerabilities: list
+          adversarial_families_tested: list
+          mitigations: list
+        tokenomic_waste:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          noise_tokens: int
+          waste_percentage: float
+          optimization_recommendations: list
+        state_context_loss:
+          detected: boolean
+          severity: "none | low | medium | high | critical"
+          gaps: list
+          recovery_steps: list
+      governance_compliance:
+        evidence_chain_complete: boolean
+        sign_off_valid: boolean
+        dispute_exposure: list
+      recommended_actions: list
+
+connectors:
+  - type: fablebreaker-sdk
+    description: "Direct access to FableBreakerSDK for protocol verification and scoring"
+  - type: certification-pipeline
+    description: "Evidence pack validation, hash verification, governance sign-off checks"
+  - type: tokenomics-engine
+    description: "CRPT measurement, waste detection, compression audit"
+  - type: github
+    description: "PR review gates, CI quality enforcement, version-controlled audit trails"
+  - type: governance
+    description: "Role-based authority verification, dispute resolution compliance"
+
+audit_dimensions:
+  - name: depth-drift
+    description: "Output becomes shallow, generic, or template-like — fails CRPT threshold"
+    fablebreaker_connection: "Maps to low DQ + ACT scores in Cognitive Return metrics"
+
+  - name: doctrine-drift
+    description: "Output contradicts correctness-first principles or Fablebreaker governance"
+    fablebreaker_connection: "Violations of GOVERNANCE.md, PACKET_POLICY.md, or protocol specs"
+
+  - name: structure-drift
+    description: "Output loses architectural form — missing hash verification, broken evidence chains"
+    fablebreaker_connection: "Certification pipeline integrity failure"
+
+  - name: red-team-weakness
+    description: "Output has exploitable gaps — would fail hidden-seed challenge"
+    fablebreaker_connection: "Tests against all 8 adversarial families at CRITICAL threshold"
+
+  - name: tokenomic-waste
+    description: "Output contains noise tokens — high N_t in Token Value Function"
+    fablebreaker_connection: "Direct measurement via compression_efficiency() and waste detection"
+
+  - name: state-context-loss
+    description: "System drops context — multi-step certification workflows break"
+    fablebreaker_connection: "RuntimeMeasurementLoop state integrity verification"
+
+dependencies:
+  - medina-operating-system
+
+downstream_skills:
+  - doctrine-synthesizer
+  - mission-roadmap-orchestrator
+  - resource-hub-organizer
+  - core-brain-architect
+  - public-doctrine-writer
