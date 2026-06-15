@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hmac
 import json
 import logging
 import os
@@ -39,7 +40,7 @@ def _check_auth(handler: "FableBreakerHandler") -> bool:
     if not API_TOKEN:
         return True  # No token configured — local-only mode
     auth = handler.headers.get("Authorization", "")
-    if auth == f"******":
+    if hmac.compare_digest(auth, f"Bearer {API_TOKEN}"):
         return True
     handler.reply({"error": "unauthorized"}, status=401)
     return False
