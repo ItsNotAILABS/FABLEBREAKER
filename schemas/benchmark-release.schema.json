@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://itsnotailabs.dev/schemas/fablebreaker-benchmark-release.schema.json",
+  "title": "FABLEBREAKER Benchmark Release",
+  "type": "object",
+  "required": ["benchmark_id", "evidence", "reproducibility_required", "operator_approval_required"],
+  "properties": {
+    "benchmark_id": { "type": "string" },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "reproducibility_required": { "type": "boolean" },
+    "operator_approval_required": { "type": "boolean" }
+  }
+}
