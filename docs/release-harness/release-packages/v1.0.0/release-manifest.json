@@ -1,0 +1,31 @@
+{
+  "schema": "nova-ecosystem-feeder-release-v1",
+  "repo": "ItsNotAILABS/FABLEBREAKER",
+  "release": "fablebreaker-benchmark-v1.0.0",
+  "status": "production-harness-candidate",
+  "feeds": [
+    "nova-model-family-v1.0.0",
+    "nova-eval",
+    "proof-before-speed"
+  ],
+  "evidence": [
+    { "kind": "overview", "path": "docs/release-harness/README.md" },
+    { "kind": "model-card", "path": "docs/release-harness/model-cards/fablebreaker-benchmark.md" },
+    { "kind": "schema", "path": "schemas/ecosystem-feeder.schema.json" },
+    { "kind": "schema", "path": "schemas/benchmark-release.schema.json" },
+    { "kind": "validator", "path": "scripts/validate-ecosystem-release.mjs" },
+    { "kind": "workflow", "path": ".github/workflows/ecosystem-release-harness.yml" }
+  ],
+  "boundaries": [
+    "proof before speed",
+    "no unverified leaderboard claim",
+    "no universal benchmark truth claim",
+    "no unsupported state-of-the-art claim",
+    "operator approval required"
+  ],
+  "approvals": {
+    "operator": false,
+    "review": false,
+    "reproducibility": false
+  }
+}
