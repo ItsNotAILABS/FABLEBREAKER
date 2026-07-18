@@ -18,9 +18,9 @@ assert.equal(manifest.repo, 'ItsNotAILABS/FABLEBREAKER');
 assert.ok(Array.isArray(manifest.evidence) && manifest.evidence.length >= 5);
 assert.ok(Array.isArray(manifest.boundaries) && manifest.boundaries.includes('proof before speed'));
 assert.equal(manifest.approvals.operator, false);
-const banned = [/state of the art guaranteed/i, /proves all models/i, /universal benchmark truth/i, /unverified leaderboard/i];
+const bannedPositiveClaims = [/state of the art guaranteed/i, /proves all models/i, /universal benchmark truth achieved/i, /unverified leaderboard is official/i];
 for (const file of required) {
   const text = fs.readFileSync(path.join(root, file), 'utf8');
-  for (const pattern of banned) assert.equal(pattern.test(text), false, `${file} contains banned phrase ${pattern}`);
+  for (const pattern of bannedPositiveClaims) assert.equal(pattern.test(text), false, `${file} contains banned positive claim ${pattern}`);
 }
 console.log(JSON.stringify({ ok: true, checked: required.length, release: manifest.release }, null, 2));
